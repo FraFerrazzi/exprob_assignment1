@@ -1,0 +1,44 @@
+<launch>
+    <!-- Run the architecture's component and allow to test it through a simple keyboard-based interface. -->
+
+    <rosparam param="config/environment_size"> [20.0, 15.0] </rosparam>
+    
+    <rosparam param="test/random_motion_time"> [0.1, 2.0] </rosparam>
+    <rosparam param="test/random_plan_points"> [2, 8] </rosparam>
+    <rosparam param="test/random_plan_time"> [0.1, 1.0] </rosparam>
+
+    <rosparam param="test/random_sense/active"> False </rosparam>
+    
+    
+    <node pkg="armor" 
+          type="execute"
+          name="armor_service" 
+          args="it.emarolab.armor.ARMORMainService"/>
+
+    <node pkg = "exprob_assignment1"  
+          type = "state_machine.py" 
+          name = "state_machine"
+          launch-prefix = "xterm -e"
+          output = "screen"
+    > </node>
+    
+    <node pkg = "exprob_assignment1"  
+          type = "planner.py"
+          name = "planner"
+          output = "screen"
+    > </node>
+    
+    <node pkg = "exprob_assignment1"  
+          type = "controller.py"
+          name = "controller"
+          output = "screen"
+    > </node>
+    
+    <node pkg = "exprob_assignment1"  
+          type = "robot_battery_state.py"
+          name = "robot_battery_state"
+          launch-prefix = "xterm -e"
+          output = "screen"
+    > </node>
+    
+</launch>
