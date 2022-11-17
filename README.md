@@ -1,57 +1,20 @@
 # Surveillance Robot - Assignment 1
 **The first ROS-based assignment for the Experimental Robotics Laboratory course held at the University of Genoa.**  
-Author: *Francesco Ferrazzi*
 
 ---
 
+## Documentation
+Click on the following link !!!!!!!ADD LINK!!!!!!!! to visualize the Sphinx documentation regarding the project.
+
 ## Introduction
 
-This repository contains ROS-based software that simulates a behavioural architecture.
-The objective is twofold: show examples of ROS software, and provide some guidelines 
-for bootstrapping software architectures for robotics.
+This repository contains ROS-based software architecture that simulates a robot used for surveillance purposes.
+The robot is placed inside in a known indoor environment. 
+The robot's objective is to go around the map, simulating a survaillance task when it gets inside a location.
+The program interacts with an ontology to retrieve essential informations to achieve the desired behavior.
+A short video shows the execution of the software architecture:
+!!!!!!!!PUT THE VIDEO!!!!!!!!!!!
 
-In particular, this repository showcases the usage of `roslaunch` and
-*parameters*, as well as the implementation of ROS *nodes*, *servers* and *actions*, with related 
-*messages*; including arrays of custom items. These examples are provided in Python 3.
-
-In addition, the architecture has been bootstrapped with an approach based on the following 
-procedure.
- 1. Define each software component with a random-based dummy implementation, i.e., mind only 
-    their required and provided interfaces. The purpose is to test the flow of (meaningless) 
-    data in the architecture for evaluating the synchronization of its components. In this
-    phase, you should investigate available libraries and arrange them in your architecture
-    in a suitable way.
-
- 2. Define a simple keyboard-based interface to inject into the architecture the relevant stimulus
-   for the robot behaviour, i.e., sensor data or state variables that it needs to *sense*. The 
-   objective is to test the software without introducing uncontrollable sources of errors, e.g., 
-   that might be due to sensors.
-
- 3. Implement the components in charge to control the robot's behaviour. In this example, it will
-    be a Finite States Machine, which is tested with the simple interfaces developed in 2.
- 
- 4. Make the interfaces developed in 2 based on randomised approaches and not on a keyboard
-   interface anymore. This is done to stress the logic of your architecture and the 
-   synchronization of its software components. In this phase, you should also introduce border 
-   case situations to further stress the architecture.
-
- 5. Write scripts to automatically evaluate if the randomized robot behaviour is consistent, 
-   e.g., though `if` statements and `timestamp` comparison.
-
- 6. Develop the actual implementation (and configure the relevant dependencies) of a single 
-   software component developed in 1 with a dummy implementation.
-
- 7. Test the component implemented in 6 through the script developed in 5.
-
- 8. Go to 6 and loop until each component is implemented.
-
- 9. Test the overall architecture, finalize the documentation and refactor the code appropriately.
-
-This repository contains the components of an architecture based on the 1-st, 2-nd and 4-th 
-steps, while the 3-rd is the main task that you should tackle during the exercise. As far as the 
-exercise is concerned, the 5-th step is optional, and the 6-th will be addressed in the next 
-parts of the Experimental Robotics Laboratory course; as far as some specific components are 
-concerned.
 
 ## Scenario
 
@@ -518,3 +481,7 @@ Note that, in Python, ROS subscribes run on separate threads. Thus, you
 need to use `mutexes` to assure data consistency across concurrent threads.
 
 ---
+
+## Author
+Author: *Francesco Ferrazzi*
+Email: *s5262829@studenti.unige.it*
