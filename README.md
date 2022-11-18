@@ -68,7 +68,7 @@ survaillance policy:
 - If a reachable room has not been visited for some time, it becomes urgent and the robot should visit it.
 The urgency of a specific location is determined by computing the difference between the last time that the robot has moved and the last time that the same location has been visited.
 
-### Assumptions
+## Assumptions
 
 For simplicity and showing purposes, we consider a scenario with the following assumptions.
  - The robot moves in a 2D, pre-defined and known environment without obstacles.
