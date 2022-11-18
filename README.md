@@ -79,6 +79,14 @@ For simplicity and showing purposes, we consider a scenario with the following a
  - The robot only simulates a survaillance task, so there is not an actual survaillance of the environment.
  - The recharge of the battery does not actually charges a battery but just waste time to simulate the task.
  - The timestamp of the robot and the timestamp of the location which the robot visits are updated when the robot gets in the issued location, so when the `controller()` method has done its execution.
+ - When the battery status becomes low, the robot reaches the charging location even if it is not reachable at the moment.
+
+## Limitations
+
+Most of the limitations derive from the hypothesis that were done while implementing the software architecture. \
+The fact that the environment is 2D constraint the map to be allocated only on one floor, without the possibility of having stairs or slopes. Also the structure is fixed, so it has a pre-defined number of rooms, corridors and doors. There would be the need to change a bit the code to maintain a reasonable structure for an indoor environment if one of this numbers needs to be changed. \
+The planner and the controller as the survaillance task and the charge of the battery are purley done to waste time, giving limitations to the actual tasks that the robot can perform. For example, the robot can not deduce if there is a person in the room or cannot generate a reasonable path to go from one location to another. \
+The robot can only check the urgency of adjacent locations that it can reach in a specific time instant, excluding all the locations that are not reachable in the same time instant.
 
 ### Synchronization
 
