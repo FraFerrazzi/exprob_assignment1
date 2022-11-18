@@ -6,6 +6,8 @@
 ## Documentation
 Click on the following link !!!!!!!ADD LINK!!!!!!!! to visualize the Sphinx documentation regarding the project.
 
+---
+
 ## Introduction
 
 This repository contains ROS-based software architecture that simulates a robot used for surveillance purposes.
@@ -40,6 +42,8 @@ roslaunch exprob_assignemnt1 surveillance_random.launch
 ``` 
 Two new terminal windows are going to be opened, making a total of three windows opened at the same time. \
 One corresponds to the `state_machine.py` GUI that gives a visual feedback of what is happening during the execution of the software architecture. One shows the computations and passages done by the `planner.py` and `controller.py` scripts. The last, shows a user interface regarding the battery state of the controlled by the `robot_battery_state.py` node.
+
+---
 
 ## Description
 
@@ -86,18 +90,12 @@ For simplicity and showing purposes, we consider a scenario with the following a
 Most of the limitations derive from the hypothesis that were done while implementing the software architecture. \
 The fact that the environment is 2D constraint the map to be allocated only on one floor, without the possibility of having stairs or slopes. Also the structure is fixed, so it has a pre-defined number of rooms, corridors and doors. There would be the need to change a bit the code to maintain a reasonable structure for an indoor environment if one of this numbers needs to be changed. \
 The planner and the controller as the survaillance task and the charge of the battery are purley done to waste time, giving limitations to the actual tasks that the robot can perform. For example, the robot can not deduce if there is a person in the room or cannot generate a reasonable path to go from one location to another. \
-The robot can only check the urgency of adjacent locations that it can reach in a specific time instant, excluding all the locations that are not reachable in the same time instant.
+The robot can only check the urgency of adjacent locations that it can reach in a specific time instant, excluding all the locations that are not reachable in the same time instant. \
+The robot states that a location is urgent only based on the timeslot for which the issued location has not been visited for, not careing about other possible stimulus.
 
-### Synchronization
+---
 
-An important aspect of this exercise is the synchronization between the robot and the user. In
-particular, the user should never wait for the robot to complete an action, except when it is
-recharging its battery. This implies that the Finite States Machine should never be blocked. In
-other words, the Finite States Machine should process speech-based, gesture-based, and 
-battery-based events as soon as they occur. Furthermore, we consider that the Finite States 
-Machine does not allow for concurrent states.
-
-## Project Structure
+## Software Architecture
 
 ### Package List
 
@@ -487,38 +485,18 @@ occurs because `test/random_sense/active` has been set to `True`.
 
 ---
 
-## The exercise
+## Possible Improvements
 
-Develop a Finite States Machine based on the SMACH library that implements the behaviour of the 
-robot. Use only the software components provided in this repository to develop such a Finite 
-States Machine.
-
-Debug your implementation with the `manual_sense.launch` configuration. Then, test it in a log 
-term running through the `random_sense.launch` configuration. 
-
-Optionally, write a script that automatically checks if an anomalous behaviour occurs while 
-using the `random_sense.launch` configuration.
-
-### The Finite States Machine
-
-The Finite States Machine to be developed should implement the scenario introduced at the 
-beginning of this README file. 
-
-In addition, the Finite States Machine should have the following functionalities.
- - It sets, in the `robot-state` node, the initial robot pose given through the 
-   `state/initial_pose` parameter.
- - It subscribes to the `sensor/speech` topic to get speech-based commands.
- - It subscribes to the `sensor/gesture` topic to get pointing gestures.
- - It subscribes to the `state/battery_low` topic to get the battery state.
- - It processes each speech, gesture, and battery message as soon as they are provided.
- - It uses the `planner` action server and cancels it if necessary.
- - It uses the `controller` action server and cancels it if necessary.
-
-Note that, in Python, ROS subscribes run on separate threads. Thus, you 
-need to use `mutexes` to assure data consistency across concurrent threads.
+The improvements regarding this software architecture would be to solve some limitations present in the system, by making more realistic assumptions. \
+A list of possible ideas is reported below:
+- Put sensors to the robot. In this way it could be possible to make it work on a 3D environment which do not have to be pre-determined. Also, if the robot is equipped with the correct sensors, it could be possible to actually perform a survaillance action, not just simulating it.
+- The robot is able to know its position and the position that it needs to reach in the environment. In this way, the `planner()` and the `controller()` methods could actually give a reasonable path to go from the current location to the target location by a set of via-points, and controlling the wheels of the robot in such a way that it follows the desired path.
+- Provide a real battery to the robot. In this way it could be possible to actually implement a charging action once the battery is low.
+- Create a simulation environment in which the robot can be tested to see the correctess of the algorithms and test its possibilities in different maps, trying also on outdoor environments.
 
 ---
 
 ## Author
 Author: *Francesco Ferrazzi*
+Student ID: *s5262829*
 Email: *s5262829@studenti.unige.it*
