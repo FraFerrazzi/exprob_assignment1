@@ -9,7 +9,7 @@ Click on the following link !!!!!!!ADD LINK!!!!!!!! to visualize the Sphinx docu
 ## Introduction
 
 This repository contains ROS-based software architecture that simulates a robot used for surveillance purposes.
-The robot is placed inside in a known indoor environment. 
+The robot is placed inside in a known indoor environment. \
 The robot's objective is to go around the map, simulating a survaillance task when it gets inside a location.
 The program interacts with an ontology to retrieve essential informations to achieve the desired behavior.
 A short video shows the execution of the software architecture:
@@ -18,9 +18,9 @@ A short video shows the execution of the software architecture:
 
 ## How to run
 
-To run the program it is necesscessary to download some essential packages. If a new version of ROS is installed on your machine, it is suggested to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7.
-Instead, if a older version of ROS is present in your machine, please refer to: https://github.com/EmaroLab/armor.
-In either cases, the procedure explained in the REEDME files and the repositories must be cloned and built in a ROS workspace. 
+To run the program it is necesscessary to download some essential packages. If a new version of ROS is installed on your machine, it is suggested to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7. \
+Instead, if a older version of ROS is present in your machine, please refer to: https://github.com/EmaroLab/armor. \
+In either cases, the procedure explained in the REEDME files and the repositories must be cloned and built in a ROS workspace. \
 After Armor has been correctly downloaded and built, the current repository of this project must be downloaded and built in a ROS workspace following this procedure typing the following command in the terminal window:
 ```bash
 cd <absolute path to your ros_workspace>/src
@@ -38,7 +38,7 @@ Use the following command to launch the software with randomized stimulus for th
 ```bash
 roslaunch exprob_assignemnt1 surveillance_random.launch
 ``` 
-Two new terminal windows are going to be opened, making a total of three windows opened at the same time. 
+Two new terminal windows are going to be opened, making a total of three windows opened at the same time. \
 One corresponds to the `state_machine.py` GUI that gives a visual feedback of what is happening during the execution of the software architecture. One shows the computations and passages done by the `planner.py` and `controller.py` scripts. The last, shows a user interface regarding the battery state of the controlled by the `robot_battery_state.py` node.
 
 ## Description
