@@ -131,13 +131,13 @@ This repository contains a ROS package named `exprob_assignment1` that includes 
       controller.
  - [utilities/exprob_assignment1](utilities/exprob_assignment1/): It contains auxiliary python files, 
    which are exploited by the files in the `scripts` folder.
-    - [architecture_name_mapper.py](scripts/architecture_name_mapper.py): It contains the name 
+    - [architecture_name_mapper.py](utilities/exprob_assignment1/architecture_name_mapper.py): It contains the name 
       of each *node*, *topic*, *server*, *actions* and *parameters* used in this architecture.
-    - [state_machine_helper.py](scripts/state_machine_helper.py): It contains the methods used in the 
+    - [state_machine_helper.py](utilities/exprob_assignment1/state_machine_helper.py): It contains the methods called in the 
       [state_machine.py](scripts/state_machine.py) node to make the code easier and cleaner to read.
  - [diagrams/](diagrams/): It contains the diagrams shown below in this README file.
- - [doc/](doc/): It contains the documentation files to visualize the Sphinx documentation.
- - [topological_map/](topological_map/): It contains the Tbox of the ontology that is used in this software
+ - [doc/](doc/): It contains the files to visualize the Sphinx documentation.
+ - [topological_map/](topological_map/): It contains the Tbox of the ontology used in this software
    architecture. It is also the repository in which the complete ontology is saved for debug purposes.
 
 ### Dependencies
