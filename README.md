@@ -100,9 +100,12 @@ The robot states that a location is urgent only based on the timeslot for which 
 
 ## Software Architecture
 
-Here the software architecture of the project is discussed. \
-First of all the general organization of the repository and the dependencies are explained. \
-Each node inside the architecture is further explained. Also the general execution of the architecture is explained, helped by some diagrams.
+Here the software architecture of the project is further explained. \
+First of all the general organization of the repository and the dependencies are pointed out. \
+Later on, the general execution of the architecture is discussed with the help of esplicative diagrams, which are:
+- Component Diagram.
+- State Diagram.
+- Sequence Diagram.
 
 ### Repository Organization
 
@@ -153,10 +156,7 @@ It is possible to check the [tutorials](http://wiki.ros.org/smach/Tutorials) rel
 functionalities. In addition, it is advised to exploit the [smach_viewer](http://wiki.ros.org/smach_viewer)
 node to visualize and debug the implemented Finite States Machine.
 
-## Software Components
-
-It follows the details of each software component implemented in this repository, which is available
-in the `scripts/` folder.
+## Software Discussion
 
 ### The `robot-battery-state` Node, its Messages and Parameters
 
