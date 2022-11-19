@@ -114,7 +114,7 @@ This repository contains a ROS package named `exprob_assignment1` that includes 
  - [launcher/](launcher/): Contains the configuration to launch this package.
     - [surveillance_manual.launch](launcher/surveillance_manual.launch): It launches this package allowing 
        to set manually when the battery state becomes low.
-    - [random_sense.launch](launcher/random_sense.launch): It launches this package with 
+    - [surveillance_random.launch](launcher/surveillance_random.launch): It launches this package with 
       random-based stimulus for the battery status.
  - [msg/](msg/): It contains the message exchanged through ROS topics.
     - [Point.msg](msg/Point.msg): It is the message representing a 2D point.
