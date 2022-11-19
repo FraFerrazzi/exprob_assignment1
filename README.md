@@ -20,10 +20,13 @@ A short video shows the execution of the software architecture:
 
 ## How to run
 
-To run the program it is necesscessary to download some essential packages. If a new version of ROS is installed on your machine, it is suggested to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7. \
+This software is based on ROS Noetic, and it has been developed with this Docker-based
+[environment](https://hub.docker.com/repository/docker/carms84/exproblab), which already 
+provides the required dependencies. \ 
+If the Docker image is not used, it is necesscessary to download some essential packages. If a new version of ROS is installed on your machine, the suggestion is to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7. \
 Instead, if a older version of ROS is present in your machine, please refer to: https://github.com/EmaroLab/armor. \
-In either cases, the procedure explained in the REEDME files and the repositories must be cloned and built in a ROS workspace. \
-After Armor has been correctly downloaded and built, the current repository of this project must be downloaded and built in a ROS workspace following this procedure typing the following command in the terminal window:
+In either cases, the procedure explained in the REEDME files should be followed and the needed repositories must be cloned and built in your ROS workspace. \
+After Armor has been correctly downloaded and built, the current [repository](https://github.com/FraFerrazzi/exprob_assignment1) of this project must be downloaded and built in a ROS workspace, typing the following command in the terminal:
 ```bash
 cd <absolute path to your ros_workspace>/src
 git clone https://github.com/FraFerrazzi/exprob_assignment1.git
@@ -393,41 +396,6 @@ via_points:
 You can also change the `test/random_motion_time` parameter (detailed below) to tune
 the behaviour of the controller.
 
-## Launching the Software
-
-This software has been based on ROS Noetic, and it has been developed with this Docker-based
-[environment](https://hub.docker.com/repository/docker/carms84/exproblab), which already 
-provides the required dependencies listed above. 
-
-### Installation
-
-Follow these steps to install the software.
- - Clone this repository inside your ROS workspace (which should be sourced in your `.bashrc`).
- - Run `chmod +x <file_name>` for each file inside the `scripts` folder.
- - Run `catkin_make` from the root of your ROS workspace.
- - Install `xterm` by entering the command `sudo apt install -y xterm`.
-
-### Launchers
-
-Use the following command to launch the software with a keyboard-base interface for speech, 
-gesture and battery level.
-```bash
-roslaunch arch_skeleton manual_sense.launch
-```
-
-Use the following command to launch the software with randomized stimulus, 
-i.e., speech, gesture and battery level.
-```bash
-roslaunch arch_skeleton random_sense.launch
-```
-
-Note that the architecture launched with these commands does nothing, except generate stimulus, 
-i.e., battery level, speech and gesture commands. In order to invoke the motion planner 
-and controller, you need to implement the Finite States Machine as described below.
-
-Check the `roslouch` outcome to get the path where logs are stored. usually, it is `~/.ros/log/`.
-That folder should also contain a link to the `latest` produced log.
-
 ### ROS Parameters
 
 This software requires the following ROS parameters.
@@ -497,6 +465,6 @@ A list of possible ideas is reported below:
 ---
 
 ## Author
-Author: *Francesco Ferrazzi*
-Student ID: *s5262829*
+Author: *Francesco Ferrazzi* \
+Student ID: *s5262829* \
 Email: *s5262829@studenti.unige.it*
