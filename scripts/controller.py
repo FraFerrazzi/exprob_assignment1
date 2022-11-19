@@ -5,8 +5,8 @@
 	:synopsis: Python module for the user Interface
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
-ROS node for the the first assignment of the Experimental Robotics course of the Robotics Engineering
-Master program. The software architecture allows to simulate the behavior of a controller that follows a list
+ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
+Master program. The software architecture allows simulating the behavior of a controller that follows a list
 of via points starting from the current point until arriving at the target point. 
 		
 """
@@ -31,7 +31,7 @@ class ControllingAction(object):
 	"""
 	This class implements an action server to simulate motion controlling task for a surveillance robot.
 	Given a plan as a set of via points, it simulates the movement to reach each point with a random
-	delay. The server, when it is done, updates the current robot position.
+	delay. The server updates the current robot position when it is done.
 	
 	"""
 	def __init__(self):

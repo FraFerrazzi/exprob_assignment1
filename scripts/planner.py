@@ -5,11 +5,11 @@
 	:synopsis: Python module for the user Interface
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
-ROS node for the the first assignment of the Experimental Robotics course of the Robotics Engineering
-Master program. The software architecture allows to simulate the behavior of a planner that produces a list
-of random via points starting from the current position and arriving at the target position given  
-by the client. Both the current position and the target positions are randomic points defined inside
-the environment.
+ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
+Master program. The software architecture allows simulating the behavior of a planner that 
+produces a list of random via points starting from the current position and arriving at the target 
+position given by the client. Both the current position and the target positions are random points 
+defined inside the environment.
 		
 """
 

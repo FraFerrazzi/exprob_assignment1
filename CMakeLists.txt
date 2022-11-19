@@ -16,17 +16,13 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder.
 add_message_files(
   FILES
-  Speech.msg
   Point.msg
-  Gesture.msg
 )
 
 ## Generate services in the 'srv' folder.
-add_service_files(
-  FILES
-  GetPose.srv
-  SetPose.srv
-)
+#add_service_files(
+#  FILES
+#)
 
 ## Generate actions in the 'action' folder.
 add_action_files(
@@ -45,7 +41,7 @@ generate_messages(
 ## The catkin_package macro generates cmake config files for your package.
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES arch_skeletton
+#  LIBRARIES exprob_assignment1
    CATKIN_DEPENDS message_runtime # rospy std_msgs
 #  DEPENDS system_lib
 )

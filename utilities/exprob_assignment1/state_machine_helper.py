@@ -5,11 +5,11 @@
 	:synopsis: Python module for the user Interface
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
-ROS node for the the first assignment of the Experimental Robotics course of the Robotics Engineering
-Master program. The software architecture allows to initialize an helper class for the Final State Machine 
+ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
+Master program. The software architecture allows initializing a helper class for the Final State Machine 
 which controls the behavior of a surveillance robot. 
-This node allows to have a cleaner and more readable code in the state_machine.py node, in fact, every task
-is called in the previously mentioned code, but it is defined in this node.
+This node allows to have cleaner and more readable code in the state_machine.py node, in fact, every task
+called in the previously mentioned code is defined in the current node.
 		
 """
 
@@ -48,7 +48,7 @@ assignment_path = rp.get_path('exprob_assignment1')
 
 # Define the file path in which the ontology is stored
 ONTOLOGY_FILE_PATH = os.path.join(assignment_path, "topological_map", "topological_map.owl")
-ONTOLOGY_FILE_PATH_DEBUG = os.path.join(assignment_path, "topological_map2")
+ONTOLOGY_FILE_PATH_DEBUG = os.path.join(assignment_path, "topological_map", "topological_map_debug.owl")
 WEB_PATH = 'http://bnc/exp-rob-lab/2022-23'
 
 # Initialize and define the client to use armor
@@ -100,7 +100,7 @@ def ontology_format(old_list, start, end):
 	Function that takes as input a list and returns a new one, which starts from the old one.
 	The new list takes every element of the old list, starting from the index specified by 'start'
 	and finishing at the index specified by 'end'. In this way, only characters and numbers in 
-	indexes that are between start and end will be copied in the new list.
+	indexes that are between 'start' and 'end' will be copied into the new list.
 		
 	Args:
 		old_list: is the list that needs to be formatted.
@@ -119,8 +119,8 @@ def ontology_format(old_list, start, end):
 class Helper:
 	"""
 	This class is created to decouple the implementation of the Finite State Machine, allowing to have a
-	more readable and clean code in the state_machine.py node. This class manages the synchronization with 
-	subscribers, services and action servers to achieve the correct behavior.
+	more readable and cleaner code in the state_machine.py node. This class manages the synchronization 
+	with subscribers, services and action servers to achieve the correct behavior.
 	
 	"""
 	def __init__(self):
@@ -134,11 +134,10 @@ class Helper:
 		# Initialize the variables used in the class 
 		self.battery_low = False            # Set to True if the battery of the robot is low
 		self.map_completed = False          # Set to True when the ontology is complete
-		self.reasoner_done = False          # Set to True after query the ontology
+		self.reasoner_done = False          # Set to True after querying the ontology
 		self.plan_completed = False         # Set to True when the planner ended the execution
 		self.control_completed = False      # Set to True when the controller ended the execution
 		self.charge_reached = False         # Set to True when the charging station is reached
-		self.going_to_charge = False        # Set to True when the robot is going to the charging station
 		self.check_completed = False        # Set to True when the robot has finished checking the location of arrival
 		
 		self._rooms = []                         # List of room objects
@@ -186,11 +185,10 @@ class Helper:
 	def build_environment(self):
 		""" 
 		Method that initializes the environment ontology using the ARMOR service.
-		It creates the environment in a randomic way, based on a fixed number of rooms, 
-		number of doors and number of corridors. The function, then, allocates the doors
-		in each location (rooms and corridors), places the robot in the initial location,
-		starts the timestamp in each room and set to True the variable that states that
-		the world was created.
+		It creates the desired indoor environment in a random way, based on a fixed number 
+		of rooms, doors and corridors. 
+		It also communicates with the ontology to initialize and define everything 
+		that will be needed to guarantee the correct behavior of the program.
 		
 		Args:
 			self: instance of the current class.
@@ -265,14 +263,14 @@ class Helper:
 		# Save ontology for DEBUG purposes
 		ARGS = [ONTOLOGY_FILE_PATH_DEBUG]
 		ontology_manager('SAVE', '', '', ARGS)
-		self.map_completed = True
+		self.map_completed = True   # Set to True only the one involved in the state
 		
 		
 	def world_done(self):
 		""" 
-		Get the value of the variable responsible of stating the creation of the environment 
+		Get the value of the variable responsible for stating the creation of the environment 
 		using the ARMOR service to define the ontology.
-			The returning value will be `True` if the map was created, `False` otherwise.
+		The returning value will be `True` if the map was created, `False` otherwise.
 		
 		Args:
 			self: instance of the current class.
@@ -286,13 +284,13 @@ class Helper:
 			
 	def reason(self):
 		""" 
-		Method that communicate with the ontology already created to retrieve informations
+		Method that communicates with the ontology already created to retrieve information
 		and decide, based on the desired pre-determined behavior, where the robot should
 		move next.
 		First of all, reachable rooms and their status (e.g. ROOM, URGENT, CORRIDOR) are retrieved.
 		Then, each reachable room is checked and the robot will move first in URGENT locations.
 		If there are no URGENT locations, it stays on CORRIDORS. If there are no CORRIDORS the robot
-		moves to a randomic ROOM. At the end, the next location that will be visited is returned.
+		moves to a random ROOM. In the end, the next location that will be visited is returned.
 		
 		Args:
 			self: instance of the current class.
@@ -305,8 +303,6 @@ class Helper:
 		self.reset_var()
 		log_msg = f'The Robot is in location: {self.prev_loc}'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
-		# Check if the battery is low
-		self.battery_check()
 		# Reason about the onoloy
 		ARGS = ['']
 		ontology_manager('REASON', '', '', ARGS)
@@ -356,15 +352,15 @@ class Helper:
 			self.next_loc = urgent_loc # take the first randomic urgent room
 		if type(self.next_loc) == list:
 			self.next_loc = self.next_loc[0]
-		self.reasoner_done = True
+		self.reasoner_done = True   # Set to True only the one involved in the state
 		return self.next_loc
 		
 		
 	def reason_done(self):
 		""" 
-		Get the value of the variable responsible of stating the completion of the reasoning
+		Get the value of the variable responsible for stating the completion of the reasoning
 		phase achieved using the ARMOR service to retrieve informations from the ontology.
-			The returning value will be `True` if the reasoner is done, `False` otherwise.
+		The returning value will be `True` if the reasoner is done, `False` otherwise.
 		
 		Args:
 			self: instance of the current class.
@@ -378,9 +374,10 @@ class Helper:
 	
 	def go_to_charge(self):
 		""" 
-		Function that allows the robot to go to the charging location before it starts to charge.
-		When the robot's battery is low, it gets as next location to reach the charging location
-		and go towards it. After calling the planner and the controller to reach the location,
+		Function that allows the robot to go to the charging location before it starts the 
+		charging routine.
+		When the robot's battery is low, it gets as target location the charging station
+		and moves towards it. After calling the planner and the controller to reach the location,
 		once 'E' is reached, the variable charge_reached is set to True and the robot is ready
 		to be charged. 
 		
@@ -389,8 +386,6 @@ class Helper:
 			
 		
 		"""
-		# Set that the robot is going to charge
-		self.going_to_charge = True
 		# Reset the boolean variables
 		self.reset_var()
 		# Set the next location to be the charging station
@@ -399,16 +394,14 @@ class Helper:
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
 		self.planner()
 		self.controller()
-		self._surveillance()
-		self.going_to_charge = False
-		self.charge_reached = True
+		self.charge_reached = True   # Set to True only the one involved in the state
 		
 		
 	def charge_ready(self):
 		""" 
-		Get the value of the variable responsible of stating that the robot is ready to be
+		Get the value of the variable responsible for stating that the robot is ready to be
 		charged once the location 'E' is reached.
-			The returning value will be `True` if the location is reached, `False` otherwise.
+		The returning value will be `True` if the charge location is reached, `False` otherwise.
 		
 		Args:
 			self: instance of the current class.
@@ -422,8 +415,8 @@ class Helper:
 	
 	def battery_callback(self, msg):
 		""" 
-		It is the callback that manages the subscriber to the topic: /state/battery_low to retrieve the
-		state of the battery.
+		It is the callback that manages the subscriber to the topic: /state/battery_low to retrieve
+		the state of the battery.
 		
 		Args:
 			self: instance of the current class.
@@ -445,9 +438,9 @@ class Helper:
 			
 	def _battery_low(self):
 		""" 
-		Get the value of the variable responsible of stating the power of the battery
+		Get the value of the variable responsible for stating the power level of the battery
 		of the robot. 
-			The returning value will be `True` if the map was created, `False` otherwise.
+		The returning value will be `True` if the battery is low, `False` otherwise.
 		
 		Args:
 			self: instance of the current class.
@@ -461,10 +454,11 @@ class Helper:
 			
 	def recharge_srv(self):
 		""" 
-		Blocking service used to charge the battery of the robot. Once the battery is low and the robot
-		is in the charging location, a request is send to the service which charges the battery after
-		a defined time and gets a result as soon as it is charged. When the service is done, the battery
-		of the robot is to high by putting battery_low = False.
+		Blocking service used to charge the battery of the robot. Once the battery is low 
+		and the robot is in the charging location, a request is sent to the service which 
+		charges the battery after a defined time and gets a result as soon as it is charged. 
+		When the service is done, the battery of the robot is set to high by putting the variable
+		battery_low to False.
 		
 		Args:
 			self: instance of the current class.
@@ -480,11 +474,11 @@ class Helper:
 		
 	def planner(self):
 		""" 
-		This method simulte a planner for a surveillance task. It starts by deciding a randomic
+		This method simulates a planner for a surveillance task. It starts by deciding a random
 		point inside the environment that will be reached. Then, a request to the PlanGoal() action 
-		service is done in order to retrieve a randomic path of via points going from the current 
-		point to the target point. The client waits for the result given by the server, which are the
-		via points that are going to be used in the controller.
+		service is done to retrieve a random path of via points going from the current 
+		point to the target point. The client waits for the result given by the server, which is the
+		list of via points that are going to be used by the controller.
 		
 		Args:
 			self: instance of the current class.
@@ -492,8 +486,6 @@ class Helper:
 		"""
 		# Reset the boolean variables
 		self.reset_var()
-		# Check if the battery is low
-		self.battery_check()
 		request = PlanGoal()
 		# Generate a randomic random point 
 		self.target_point.x = random.uniform(0, anm.ENVIRONMENT_SIZE[0])
@@ -509,13 +501,13 @@ class Helper:
 		self._viapoints = (self.planner_cli.get_result()).via_points
 		log_msg = f'The PLANNER has found all the via points to get to the target\n\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
-		self.plan_completed = True  # Set to TRUE only the one involved in the state
+		self.plan_completed = True  # Set to True only the one involved in the state
 	
 		
 	def plan_done(self):
 		""" 
 		Get the value of the variable responsible of stating the status of the planner.
-			The returning value will be `True` if the planner has finished, `False` otherwise.
+		The returning value will be `True` if the planner has finished, `False` otherwise.
 		
 		Args:
 			self: instance of the current class.
@@ -529,13 +521,14 @@ class Helper:
 	
 	def controller(self):
 		""" 
-		This function simulte a controller for a surveillance task. It starts by getting the via points
-		from the planner and send a request to the ControlGoal() action service in order to follow the
-		desired path. When the target point is reached, the result is sent back to the client which 
-		updates the current point with the target point that was previously sent to the action server.
-		Later on, the controller communicate with the ontology to update some informations regarding the
-		location in which the robot is arrived, the timestamp of the last motion of the robot and the 
-		timestamp of the location that the robot has reached.
+		This function simulates a controller for a surveillance task. It starts by getting the
+		via points from the planner and sends a request to the ControlGoal() action service in 
+		order to follow the desired path. 
+		When the target point is reached, the result is sent back to the client which updates 
+		the current point with the target point that was previously sent to the action server.
+		Later on, the controller communicates with the ontology to update some information 
+		regarding the location in which the robot has arrived, the timestamp of the last motion 
+		of the robot and the timestamp of the location that the robot has reached.
 		
 		Args:
 			self: instance of the current class.
@@ -543,8 +536,6 @@ class Helper:
 		"""
 		# Reset the boolean variables
 		self.reset_var()
-		# Check if the battery is low
-		self.battery_check()
 		request = ControlGoal()
 		# Define the request for the Controller
 		request.via_points = self._viapoints
@@ -567,18 +558,25 @@ class Helper:
 		ARGS = ['now', 'Robot1']
 		last_motion = ontology_manager('QUERY', 'DATAPROP', 'IND', ARGS)
 		last_motion = ontology_format(last_motion, 1, 11)
+		# Retreive the last time a specific location has been visited
+		ARGS = ['visitedAt', self.next_loc]
+		last_location = ontology_manager('QUERY', 'DATAPROP', 'IND', ARGS)
+		last_location = ontology_format(last_location, 1, 11)
 		# Update the time
 		self.timer_now = str(int(time.time()))  
 		# Update the timestamp since the robot moved
 		ARGS = ['now', 'Robot1', 'Long', self.timer_now, last_motion[0]]
 		ontology_manager('REPLACE', 'DATAPROP', 'IND', ARGS)
-		self.control_completed = True  # Set to TRUE only the one involved in the state
+		# Update the timestamp since the robot visited the location
+		ARGS = ['visitedAt', self.next_loc, 'Long', self.timer_now, last_location[0]]
+		ontology_manager('REPLACE', 'DATAPROP', 'IND', ARGS)
+		self.control_completed = True  # Set to True only the one involved in the state
 	
 		
 	def control_done(self):
 		""" 
 		Get the value of the variable responsible of stating the status of the controller.
-			The returning value will be `True` if the controller has finished, `False` otherwise.
+		The returning value will be `True` if the controller has finished, `False` otherwise.
 		
 		Args:
 			self: instance of the current class.
@@ -588,49 +586,30 @@ class Helper:
 		
 		"""
 		return self.control_completed
-			
-			
-	def battery_check(self):
-		""" 
-		Method that checks the state of the battery. If the battery is low, and the robot
-		is not going to the charging station, it stops what the robot is doing using a return. 
-		Before exiting the state, the method communicate with the ontology to update the timestamp 
-		of the last motion of the robot and the timestamp of the location that the robot has reached.
-		
-		Args:
-			self: instance of the current class.
-			
-		"""
-		self.mutex.acquire()
-		try:
-			# Check if the battery is low and the robot is not going to charge
-			if self.battery_low == True and self.going_to_charge == False:
-				log_msg = f'Stop execution and go to the charging station!'
-				rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
-				return # If battery is low, do nothing and return
-		finally:
-			self.mutex.release()
 				
 				
 	def reset_var(self):
 		""" 
-		It is used to reset all the variables used to decide when a task is done its execution.
+		It is used to reset all the variables used to decide when a task has finished its execution.
 		
 		Args:
 			self: instance of the current class.
 			
 		"""
+		self.mutex.acquire()    # take the mutex
 		self.reasoner_done = False
 		self.plan_completed = False
 		self.control_completed = False
 		self.charge_reached = False
 		self.check_completed = False
+		self.mutex.release()    # release the mutex
 		
 	
 	def _surveillance(self):
 		""" 
-		It simulates a survaillance task of the location in which the robot arrives when the controller
-		has done its execution. While it checks the location, also the status of the battery is checked.
+		It simulates a survaillance task of the location in which the robot arrives when the 
+		controller has done its execution. 
+		While it explores the location, also the status of the battery is checked.
 		
 		
 		Args:
@@ -639,8 +618,6 @@ class Helper:
 		"""
 		# Reset the boolean variables
 		self.reset_var()
-		# Check if the battery is low
-		self.battery_check()
 		# Surveillance task, lasts 5 seconds if the battery is charged
 		surv_count = 0
 		log_msg = f'The robot is surveilling the location'
@@ -648,18 +625,9 @@ class Helper:
 		while self.battery_low == False and surv_count < 25: # If bettery low there won't be surveillance task
 			rospy.sleep(WAIT_SURVEILLANCE_TIME)
 			surv_count = surv_count + 1
-		# Retreive the last time a specific location has been checked
-		ARGS = ['visitedAt', self.next_loc]
-		last_location = ontology_manager('QUERY', 'DATAPROP', 'IND', ARGS)
-		last_location = ontology_format(last_location, 1, 11)
-		# Update the time
-		self.timer_now = str(int(time.time()))  
-		# Update the timestamp since the robot checked the location
-		ARGS = ['visitedAt', self.next_loc, 'Long', self.timer_now, last_location[0]]
-		ontology_manager('REPLACE', 'DATAPROP', 'IND', ARGS)
 		log_msg = f'The robot checked location: {self.next_loc}\n\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
-		self.check_completed = True  # Set to TRUE only the one involved in the state
+		self.check_completed = True  # Set to True only the one involved in the state
 	
 	
 	

@@ -2,16 +2,17 @@
 """
 .. module:: robot_battery_state
 	:platform: Unix
-	:synopsis: Python module for the user Interface
+	:synopsis: Python module for the management of the battery status
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
-ROS node for the the first assignment of the Experimental Robotics course of the Robotics Engineering
-Master program. The software architecture allows to control the state of the robot's battery level.
-This node publishes the state of the battery on the topic /state/battery_low. The level of the battery
-can be set to low in two different way. The first one is to set battery_low = True after a random
-delay which is defined in the architecture. The second one is to set battery_low = True manually,
-retrieving the input from the user. When the battery is low, the transition is published.
-The node also implements a service which is responsible of charging the robot after a timer expires.
+ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
+Master program. The software architecture allows the control of the battery level of the robot.
+This node publishes the state of the battery on the topic /state/battery_low. The transition of 
+the battery level from high to low can happen in two different ways. 
+The first one is to set battery_low = True after a random delay defined in the architecture. 
+The second one is to set battery_low = True manually, retrieving the input from the user. 
+When the battery becomes low, the transition is published.
+The node also implements a service responsible for charging the robot after a timer expires.
 The service is blocking and after the battery is charged, the response is sent to the client.
 		
 """
@@ -35,8 +36,8 @@ LOG_TAG = anm.NODE_ROBOT_BATTERY_STATE
 
 class RobotBatteryState:
 	"""
-	This class implements the robot battery state manager, which is responsible of setting the battery
-	state to low and recharging the battery once the robot is in the charge location 'E'.
+	This class implements the robot battery state manager, which is responsible for setting the battery
+	state to low and recharge the battery once the robot is in the charge location 'E'.
 	
 	"""
 	def __init__(self):

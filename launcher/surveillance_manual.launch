@@ -18,19 +18,20 @@
     <node pkg = "exprob_assignment1"  
           type = "state_machine.py" 
           name = "state_machine"
-          launch-prefix = "xterm -e"
           output = "screen"
     > </node>
     
     <node pkg = "exprob_assignment1"  
           type = "planner.py"
           name = "planner"
+          launch-prefix="xterm -e"
           output = "screen"
     > </node>
     
     <node pkg = "exprob_assignment1"  
           type = "controller.py"
           name = "controller"
+          launch-prefix="xterm -e" 
           output = "screen"
     > </node>
     

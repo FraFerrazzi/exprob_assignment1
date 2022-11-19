@@ -5,21 +5,21 @@
 	:synopsis: Python module for the user Interface
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
-ROS node for the the first assignment of the Experimental Robotics course of the Robotics Engineering
-Master program. The software architecture allows to initialize a Final State Machine which controls 
+ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
+Master program. The software architecture allows initializing a Final State Machine which controls 
 the behavior of a surveillance robot. 
-The scenario involves a robot deployed in a indoor environment for surveillance purposes.
+The scenario involves a robot deployed in an indoor environment for surveillance purposes.
 The robot's objective is to visit different locations, which are rooms and corridors, and stay there 
-for some time. The robot start in the E, which is the charging location, and waits until it receives 
-the information to build the topological map. The robot moves in a new location, and waits few seconds 
-before it checks another location. This behavior is repeated in a infinite loop. 
-When the robot' s battery is low, it goes in the charging location, and waits some time before it starts 
+for some time. The robot starts in the E, which is the charging location, and waits until it receives 
+the information to build the topological map. The robot moves to a new location and waits a few seconds 
+before it checks another location. This behavior is repeated until the program is not shut down.
+When the robot's battery is low, it goes to the charging location and waits some time before it starts 
 again the just explained behavior. When the robot's battery is not low, it should move among locations 
-with the follwoing policy:
-1) It should mainly stay on corridors,
+with the following policy:
+1) It should mainly stay in corridors.
 2) If a reachable room has not been visited for a fixed time, the room becomes urgent and the robot visits it.
-The subscriptions, publishers, services and service actions are defined and utilized in the helper node of
-the final state machine called final_state_machine.py.
+The subscriptions, publishers, services, and service actions are defined and utilized in the helper node of
+the final state machine called final_state_machine.py..
 		
 """
 
@@ -86,19 +86,20 @@ class BuildWorld(smach.State):
 								 
 	def execute(self, userdata):
 		""" 
-		Method which is exectuted before exiting the state BUILDWORLD. This method generates the world by calling
-		the method build_environment() defined in the helper node. When the environment is built, the transition to
-		the next state occours.
+		Method which is executed before exiting the state BUILDWORLD. This method generates the 
+		environment by calling the method build_environment() defined in the helper node. 
+		When the environment is built, the transition to the next state occurs.
 		
 		Args:
 			self: instance of the current class.
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_WORLD_DONE (Str): is the transition to go from the BUILDWORLD state to the REASONER state.
+			TRANS_WORLD_DONE: is the transition to go from the BUILDWORLD state to the REASONER
+			                  state.
 		
 		"""
-		log_msg = f'\n\n######### Executing state BUILD WORLD #########\n'
+		log_msg = f'\n\n############ Executing state BUILD WORLD ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG)) 
 		self._helper.build_environment()     
 		while not rospy.is_shutdown():
@@ -131,19 +132,20 @@ class Charge(smach.State):
 
 	def execute(self, userdata):
 		""" 
-		Method which is exectuted before exiting the state CHARGE. This method makes the robot charge itself relying
-		the method recharge_srv() defined in the helper node. When the battery is charged, the transition to the next 
-		state occours.
+		Method which is executed before exiting the state CHARGE. This method makes the robot 
+		charge itself relying on the method recharge_srv() defined in the helper node.
+		When the battery is charged, the transition to the next state occurs.
 		
 		Args:
 			self: instance of the current class.
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_OK (Str): is the transition to go from the CHARGE state to the REASONER state.
+			TRANS_BATTERY_OK: is the transition to go from the CHARGE state to the REASONER 
+			                  state.
 		
 		"""
-		rospy.loginfo('\n\n######### Executing state CHARGE #########\n')
+		rospy.loginfo('\n\n############ Executing state CHARGE ############\n')
 		self._helper.recharge_srv()
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
@@ -175,19 +177,21 @@ class ReachCharge(smach.State):
 			
 	def execute(self, userdata):
 		""" 
-		Method which is exectuted before exiting the state REACHCHARGE. This method makes the robot go to the charging
-		location 'E' by calling the method go_to_charge() defined in the helper node. When the robot reaches the charging
-		location, the transition to the next state occours.
+		Method which is executed before exiting the state REACHCHARGE. This method makes the 
+		robot go to the charging location 'E' by calling the method go_to_charge() defined in 
+		the helper node. 
+		When the robot reaches the charging location, the transition to the next state occurs.
 		
 		Args:
 			self: instance of the current class.
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_CHARGE_ON (Str): is the transition to go from the REACHCHARGE state to the CHARGE state.
+			TRANS_CHARGE_ON: is the transition to go from the REACHCHARGE state to the CHARGE
+			                 state.
 		
 		"""
-		rospy.loginfo('\n\n######### Executing state REACH CHARGE #########\n')
+		rospy.loginfo('\n\n############ Executing state REACH CHARGE ############\n')
 		self._helper.go_to_charge()
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
@@ -219,9 +223,10 @@ class Reasoner(smach.State):
 			
 	def execute(self, userdata):
 		""" 
-		Method which is exectuted before exiting the state REASONER. This function makes the robot reason in order to achieve
-		the wanted behavior for the surveillance robot, by calling the method reason() defined in the helper node. When the robot
-		finishes to reason and to query the ontology, the power level of the battery is checked. If the battery is low, the next 
+		Method which is executed before exiting the state REASONER. This function makes the robot
+		reason in order to achieve the wanted behavior for the surveillance robot, by calling the
+		method reason() defined in the helper node. When the robot finishes to query the ontology, 
+		the power level of the battery is checked. If the battery is low, the next 
 		state to be executed will be REACHCHARGE, else it will be executed the PLANNER state.
 		
 		Args:
@@ -229,11 +234,13 @@ class Reasoner(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW (Str): is the transition to go from the REASONER state to the REACHCHARGE state.
-			TRANS_INFO_DONE (Str): is the transition to go from the REASONER state to the PLANNER state.
+			TRANS_BATTERY_LOW: is the transition to go from the REASONER state to the 
+			                   REACHCHARGE state.
+			TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER 
+			                 state.
 		
 		"""
-		log_msg = f'\n\n######### Executing state REASONER #########\n'
+		log_msg = f'\n\n############ Executing state REASONER ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
 		goal_location = self._helper.reason()
 		log_msg = f'The next location that will be reached is: {goal_location}\n\n'
@@ -271,22 +278,26 @@ class Planner(smach.State):
 			
 	def execute(self, userdata):
 		""" 
-		Function which is exectuted before exiting the state PLANNER. This method is a pseudo planner which scope is to generate
-		a randomic path defined by via points for reaching the next location. This is mainly done to waste time and simulate the 
-		behavior of a real planner. This is done by calling the method planner() implemented in the helper node. At this point, 
-		the power level of the battery is checked.
-		If the battery is low, the next state to be executed will be REACHCHARGE, else it will be executed the CONTROLLER state.
+		Function which is executed before exiting the state PLANNER. This method is a pseudo 
+		planner which scope is to generate a random path defined by via points for reaching the 
+		next location. This is done to waste time and simulate the behavior of a dummy planner. 
+		The behavior is achieved by calling the method planner() implemented in the helper node. 
+		At this point, the power level of the battery is checked.
+		If the battery is low, the next state to be executed will be REACHCHARGE, else it will be
+		executed the CONTROLLER state.
 		
 		Args:
 			self: instance of the current class.
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW (Str): is the transition to go from the PLANNER state to the REACHCHARGE state.
-			TRANS_PLAN_OK (Str): is the transition to go from the PLANNER state to the CONTROLLER state.
+			TRANS_BATTERY_LOW: is the transition to go from the PLANNER state to the 
+			                   REACHCHARGE state.
+			TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER 
+			               state.
 		
 		"""
-		log_msg = f'\n\n######### Executing state PLANNER #########\n'
+		log_msg = f'\n\n############ Executing state PLANNER ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
 		self._helper.planner()
 		while not rospy.is_shutdown():
@@ -322,22 +333,27 @@ class Controller(smach.State):
 		
 	def execute(self, userdata):
 		""" 
-		Method which is exectuted before exiting the state CONTROLLER. This method is a pseudo controller which scope is to 
-		let the robot follow the via points generated by the planner until it reaches the final destination. This is mainly done 
-		to waste time and simulate the behavior of a real controller. This is done by calling the method controller() implemented
-		in the helper node. At this point, the power level of the battery is checked.
-		If the battery is low, the next state to be executed will be REACHCHARGE, else it will be executed the SURVEILLANCE state.
+		Method which is executed before exiting the state CONTROLLER. This method is a pseudo
+		controller which scope is to let the robot follow the via points generated by the planner 
+		until it reaches the final destination. This is done by calling the method controller() 
+		implemented in the helper node. This method wastes time and simulates the behavior of a 
+		dummy controller.
+		At this point, the power level of the battery is checked.
+		If the battery is low, the next state to be executed will be REACHCHARGE, else it will be
+		executed the SURVEILLANCE state.
 		
 		Args:
 			self: instance of the current class.
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW (Str): is the transition to go from the CONTROLLER state to the REACHCHARGE state.
-			TRANS_CHECK_LOC (Str): is the transition to go from the CONTROLLER state to the SURVEILLANCE state.
+			TRANS_BATTERY_LOW: is the transition to go from the CONTROLLER state to the
+			                   REACHCHARGE state.
+			TRANS_CHECK_LOC: is the transition to go from the CONTROLLER state to the 
+			                 SURVEILLANCE state.
 		
 		"""
-		log_msg = f'\n\n######### Executing state CONTROLLER #########\n'
+		log_msg = f'\n\n############ Executing state CONTROLLER ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
 		self._helper.controller()
 		while not rospy.is_shutdown():
@@ -373,21 +389,24 @@ class Surveillance(smach.State):
 		
 	def execute(self, userdata):
 		""" 
-		Method which is exectuted before exiting the state SURVEILLANCE. This method simulates a surveillance task when the
-		robot arrives in a specific location.
+		Method which is executed before exiting the state SURVEILLANCE. This method simulates a
+		surveillance task when the robot arrives at a specific location.
 		It wastes time while it cyclically checks the state of the battery.
-		If the battery is low, the next state to be executed will be REACHCHARGE, else it will be executed the REASONER state.
+		If the battery is low, the next state to be executed will be REACHCHARGE, else it will be 
+		executed the REASONER state.
 		
 		Args:
 			self: instance of the current class.
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW (Str): is the transition to go from the SURVEILLANCE state to the REACHCHARGE state.
-			TRANS_CHECK_DONE (Str): is the transition to go from the SURVEILLANCE state to the REASONER state.
+			TRANS_BATTERY_LOW: is the transition to go from the SURVEILLANCE state to the
+			                   REACHCHARGE state.
+			TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the 
+			                  REASONER state.
 		
 		"""
-		log_msg = f'\n\n######### Executing state SURVEILLANCE #########\n'
+		log_msg = f'\n\n############ Executing state SURVEILLANCE ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
 		self._helper._surveillance()
 		while not rospy.is_shutdown():
@@ -424,73 +443,73 @@ def main():
 		# Add states to the container
 		smach.StateMachine.add(STATE_BUILD_WORLD, BuildWorld(helper),
 							transitions={TRANS_BATTERY_LOW:STATE_BUILD_WORLD,
-										TRANS_CHARGE_ON:STATE_BUILD_WORLD, 
-										TRANS_BATTERY_OK:STATE_BUILD_WORLD,
-										TRANS_CHECK_LOC:STATE_BUILD_WORLD,
-										TRANS_INFO_DONE:STATE_BUILD_WORLD,
-										TRANS_PLAN_OK:STATE_BUILD_WORLD,
-										TRANS_WORLD_DONE:STATE_REASONER,
-										TRANS_CHECK_DONE:STATE_BUILD_WORLD})
+								     TRANS_CHARGE_ON:STATE_BUILD_WORLD, 
+								     TRANS_BATTERY_OK:STATE_BUILD_WORLD,
+								     TRANS_CHECK_LOC:STATE_BUILD_WORLD,
+								     TRANS_INFO_DONE:STATE_BUILD_WORLD,
+								     TRANS_PLAN_OK:STATE_BUILD_WORLD,
+								     TRANS_WORLD_DONE:STATE_REASONER,
+								     TRANS_CHECK_DONE:STATE_BUILD_WORLD})
 																										
 		smach.StateMachine.add(STATE_CHARGE, Charge(helper), 
 							transitions={TRANS_BATTERY_LOW:STATE_CHARGE,
-										TRANS_CHARGE_ON:STATE_CHARGE,
-										TRANS_BATTERY_OK:STATE_REASONER,
-										TRANS_CHECK_LOC:STATE_CHARGE,
-										TRANS_INFO_DONE:STATE_CHARGE,
-										TRANS_PLAN_OK:STATE_CHARGE,
-										TRANS_WORLD_DONE:STATE_CHARGE,
-										TRANS_CHECK_DONE:STATE_CHARGE})
+								     TRANS_CHARGE_ON:STATE_CHARGE,
+								     TRANS_BATTERY_OK:STATE_REASONER,
+								     TRANS_CHECK_LOC:STATE_CHARGE,
+							             TRANS_INFO_DONE:STATE_CHARGE,
+								     TRANS_PLAN_OK:STATE_CHARGE,
+								     TRANS_WORLD_DONE:STATE_CHARGE,
+								     TRANS_CHECK_DONE:STATE_CHARGE})
 													
 		smach.StateMachine.add(STATE_REASONER, Reasoner(helper), 
 							transitions={TRANS_BATTERY_LOW:STATE_REACH_CHARGE,
-										TRANS_CHARGE_ON:STATE_REASONER, 
-										TRANS_BATTERY_OK:STATE_REASONER,
-										TRANS_CHECK_LOC:STATE_REASONER,
-										TRANS_INFO_DONE:STATE_PLANNER,
-										TRANS_PLAN_OK:STATE_REASONER,
-										TRANS_WORLD_DONE:STATE_REASONER,
-										TRANS_CHECK_DONE:STATE_REASONER})
+								     TRANS_CHARGE_ON:STATE_REASONER, 
+								     TRANS_BATTERY_OK:STATE_REASONER,
+								     TRANS_CHECK_LOC:STATE_REASONER,
+								     TRANS_INFO_DONE:STATE_PLANNER,
+								     TRANS_PLAN_OK:STATE_REASONER,
+								     TRANS_WORLD_DONE:STATE_REASONER,
+								     TRANS_CHECK_DONE:STATE_REASONER})
 													
 		smach.StateMachine.add(STATE_PLANNER, Planner(helper), 
 							transitions={TRANS_BATTERY_LOW:STATE_REACH_CHARGE, 
-										TRANS_CHARGE_ON:STATE_PLANNER,
-										TRANS_BATTERY_OK:STATE_PLANNER,
-										TRANS_CHECK_LOC:STATE_PLANNER,
-										TRANS_INFO_DONE:STATE_PLANNER,
-										TRANS_PLAN_OK:STATE_CONTROLLER,
-										TRANS_WORLD_DONE:STATE_PLANNER,
-										TRANS_CHECK_DONE:STATE_PLANNER})
+								     TRANS_CHARGE_ON:STATE_PLANNER,
+							             TRANS_BATTERY_OK:STATE_PLANNER,
+								     TRANS_CHECK_LOC:STATE_PLANNER,
+								     TRANS_INFO_DONE:STATE_PLANNER,
+								     TRANS_PLAN_OK:STATE_CONTROLLER,
+								     TRANS_WORLD_DONE:STATE_PLANNER,
+								     TRANS_CHECK_DONE:STATE_PLANNER})
 													
 		smach.StateMachine.add(STATE_CONTROLLER, Controller(helper), 
 							transitions={TRANS_BATTERY_LOW:STATE_REACH_CHARGE, 
-										TRANS_CHARGE_ON:STATE_CONTROLLER,
-										TRANS_BATTERY_OK:STATE_CONTROLLER,
-										TRANS_CHECK_LOC:STATE_SURVEILLANCE,
-										TRANS_INFO_DONE:STATE_CONTROLLER,
-										TRANS_PLAN_OK:STATE_CONTROLLER,
-										TRANS_WORLD_DONE:STATE_CONTROLLER,
-										TRANS_CHECK_DONE:STATE_CONTROLLER})
+								     TRANS_CHARGE_ON:STATE_CONTROLLER,
+								     TRANS_BATTERY_OK:STATE_CONTROLLER,
+								     TRANS_CHECK_LOC:STATE_SURVEILLANCE,
+								     TRANS_INFO_DONE:STATE_CONTROLLER,
+								     TRANS_PLAN_OK:STATE_CONTROLLER,
+								     TRANS_WORLD_DONE:STATE_CONTROLLER,
+								     TRANS_CHECK_DONE:STATE_CONTROLLER})
 													
 		smach.StateMachine.add(STATE_REACH_CHARGE, ReachCharge(helper), 
 							transitions={TRANS_BATTERY_LOW:STATE_REACH_CHARGE, 
-										TRANS_CHARGE_ON:STATE_CHARGE,
-										TRANS_BATTERY_OK:STATE_REACH_CHARGE,
-										TRANS_CHECK_LOC:STATE_REACH_CHARGE,
-										TRANS_INFO_DONE:STATE_REACH_CHARGE,
-										TRANS_PLAN_OK:STATE_REACH_CHARGE,
-										TRANS_WORLD_DONE:STATE_REACH_CHARGE,
-										TRANS_CHECK_DONE:STATE_REACH_CHARGE})
+								     TRANS_CHARGE_ON:STATE_CHARGE,
+								     TRANS_BATTERY_OK:STATE_REACH_CHARGE,
+								     TRANS_CHECK_LOC:STATE_REACH_CHARGE,
+								     TRANS_INFO_DONE:STATE_REACH_CHARGE,
+								     TRANS_PLAN_OK:STATE_REACH_CHARGE,
+								     TRANS_WORLD_DONE:STATE_REACH_CHARGE,
+								     TRANS_CHECK_DONE:STATE_REACH_CHARGE})
 										
 		smach.StateMachine.add(STATE_SURVEILLANCE, Surveillance(helper), 
 							transitions={TRANS_BATTERY_LOW:STATE_REACH_CHARGE, 
-										TRANS_CHARGE_ON:STATE_SURVEILLANCE,
-										TRANS_BATTERY_OK:STATE_SURVEILLANCE,
-										TRANS_CHECK_LOC:STATE_SURVEILLANCE,
-										TRANS_INFO_DONE:STATE_SURVEILLANCE,
-										TRANS_PLAN_OK:STATE_SURVEILLANCE,
-										TRANS_WORLD_DONE:STATE_SURVEILLANCE,
-										TRANS_CHECK_DONE:STATE_REASONER})
+								     TRANS_CHARGE_ON:STATE_SURVEILLANCE,
+								     TRANS_BATTERY_OK:STATE_SURVEILLANCE,
+								     TRANS_CHECK_LOC:STATE_SURVEILLANCE,
+								     TRANS_INFO_DONE:STATE_SURVEILLANCE,
+								     TRANS_PLAN_OK:STATE_SURVEILLANCE,
+								     TRANS_WORLD_DONE:STATE_SURVEILLANCE,
+								     TRANS_CHECK_DONE:STATE_REASONER})
 										  
 	# Create and start the introspection server for visualization
 	sis = smach_ros.IntrospectionServer('server_name', sm, '/SM_ROOT')
