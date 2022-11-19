@@ -125,7 +125,7 @@ This repository contains a ROS package named `exprob_assignment1` that includes 
       concerning motion controlling.
  - [scripts/](scripts/): It contains the implementation of each software components.
     - [state_machine.py](scripts/state_machine.py): It implements the final state machine for the software architecture.
-    - [robot_battery_state.py](scripts/robot_battery_state.py): It implements the robot battery state regarding its level.
+    - [robot_battery_state.py](scripts/robot_battery_state.py): It implements the management of the robot's battery level.
     - [planner.py](scripts/planner.py): It is a dummy implementation of a motion planner.
     - [controller.py](scripts/controller.py): It is a dummy implementation of a motion 
       controller.
