@@ -119,9 +119,9 @@ This repository contains a ROS package named `exprob_assignment1` that includes 
  - [msg/](msg/): It contains the message exchanged through ROS topics.
     - [Point.msg](msg/Point.msg): It is the message representing a 2D point.
  - [action/](action/): It contains the definition of each action server used by this software.
-    - [Plan.action](action/Plan.action): It defines the goal, feedback and results concerning 
+    - [Plan.action](action/Plan.action): It defines the target and the current points, the feedback and the results concerning 
       motion planning.
-    - [Control.action](action/Control.action): It defines the goal, feedback and results 
+    - [Control.action](action/Control.action): It defines the goal, the feedback and the results 
       concerning motion controlling.
  - [scripts/](scripts/): It contains the implementation of each software components.
     - [state_machine.py](scripts/state_machine.py): It implements the final state machine for the software architecture.
