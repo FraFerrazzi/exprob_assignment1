@@ -100,64 +100,57 @@ The robot states that a location is urgent only based on the timeslot for which 
 
 ## Software Architecture
 
-### Package List
+Here the software architecture of the project is discussed. \
+First of all the general organization of the repository and the dependencies are explained. \
+Each node inside the architecture is further explained. Also the general execution of the architecture is explained, helped by some diagrams.
 
-This repository contains a ROS package named `arch_skeleton` that includes the following resources.
+### Repository Organization
+
+This repository contains a ROS package named `exprob_assignment1` that includes the following resources.
  - [CMakeList.txt](CMakeList.txt): File to configure this package.
  - [package.xml](package.xml): File to configure this package.
  - [setup.py](setup.py): File to `import` python modules from the `utilities` folder into the 
    files in the `script` folder. 
  - [launcher/](launcher/): Contains the configuration to launch this package.
-    - [manual_sense.launch](launcher/manual_sense.launch): It launches this package allowing 
-       for keyboard-based interface.
+    - [surveillance_manual.launch](launcher/surveillance_manual.launch): It launches this package allowing 
+       to set manually when the battery state becomes low.
     - [random_sense.launch](launcher/random_sense.launch): It launches this package with 
-      random-based stimulus.
+      random-based stimulus for the battery status.
  - [msg/](msg/): It contains the message exchanged through ROS topics.
-    - [Gesture.msg](msg/Gesture.msg): It is the message representing detected pointing gestures.
-    - [Speech.msg](msg/Speech.msg): It is the message representing speech-based commands.
     - [Point.msg](msg/Point.msg): It is the message representing a 2D point.
- - [srv/](srv/): It Contains the definition of each server used by this software.
-    - [GetPose.srv](srv/GetPose.srv): It defines the request and response to get the current 
-      robot position.
-    - [SetPose.srv](srv/SetPose.srv): It defines the request and response to set the current 
-      robot position.
  - [action/](action/): It contains the definition of each action server used by this software.
     - [Plan.action](action/Plan.action): It defines the goal, feedback and results concerning 
       motion planning.
     - [Control.action](action/Control.action): It defines the goal, feedback and results 
       concerning motion controlling.
  - [scripts/](scripts/): It contains the implementation of each software components.
-    - [speech.py](scripts/speech.py): It is a dummy implementation of the speech-based 
-      commands detection algorithm.
-    - [gesture.py](scripts/gesture.py): It is a dummy implementation of the gesture-based
-      commands detection algorithm.
-    - [robot_state.py](scripts/robot_state.py): It implements the robot state including:
-      current position, and battery level.
+    - [state_machine.py](scripts/state_machine.py): It implements the final state machine for the software architecture.
+    - [robot_battery_state.py](scripts/robot_battery_state.py): It implements the robot battery state regarding its level.
     - [planner.py](scripts/planner.py): It is a dummy implementation of a motion planner.
     - [controller.py](scripts/controller.py): It is a dummy implementation of a motion 
       controller.
- - [utilities/arch_skeleton](utilities/arch_skeleton/): It contains auxiliary python files, 
+ - [utilities/exprob_assignment1](utilities/exprob_assignment1/): It contains auxiliary python files, 
    which are exploited by the files in the `scripts` folder.
     - [architecture_name_mapper.py](scripts/architecture_name_mapper.py): It contains the name 
       of each *node*, *topic*, *server*, *actions* and *parameters* used in this architecture.
+    - [state_machine_helper.py](scripts/state_machine_helper.py): It contains the methods used in the 
+      [state_machine.py](scripts/state_machine.py) node to make the code easier and cleaner to read.
  - [diagrams/](diagrams/): It contains the diagrams shown below in this README file.
+ - [doc/](doc/): It contains the documentation files to visualize the Sphinx documentation.
+ - [topological_map/](topological_map/): It contains the Tbox of the ontology that is used in this software
+   architecture. It is also the repository in which the complete ontology is saved for debug purposes.
 
 ### Dependencies
 
 The software exploits [roslaunch](http://wiki.ros.org/roslaunch) and 
 [rospy](http://wiki.ros.org/rospy) for using python with ROS. Rospy allows defining ROS nodes, 
-services and related messages.
-
+services and related messages. \
 Also, the software uses [actionlib](http://wiki.ros.org/actionlib/DetailedDescription) to define
-action servers. In particular, this software is based on 
-[SimpleActionServer](http://docs.ros.org/en/jade/api/actionlib/html/classactionlib_1_1simple__action__server_1_1SimpleActionServer.html#a2013e3b4a6a3cb0b77bb31403e26f137).
-Thus, you should use the [SimpleActionClient](https://docs.ros.org/en/api/actionlib/html/classactionlib_1_1simple__action__client_1_1SimpleActionClient.html)
-to solve the exercise.
-
-The Finite States Machine that you will implement based on the software components provided in 
-this repository should be based on [SMACH](http://wiki.ros.org/smach). You can check the 
-[tutorials](http://wiki.ros.org/smach/Tutorials) related to SMACH, for an overview of its 
-functionalities. In addition, you can exploit the [smach_viewer](http://wiki.ros.org/smach_viewer)
+action servers. In particular, this software is based on the use of the [SimpleActionServer](http://docs.ros.org/en/jade/api/actionlib/html/classactionlib_1_1simple__action__server_1_1SimpleActionServer.html#a2013e3b4a6a3cb0b77bb31403e26f137) and the [SimpleActionClient](https://docs.ros.org/en/api/actionlib/html/classactionlib_1_1simple__action__client_1_1SimpleActionClient.html)
+to implement the project. \
+The Finite States Machine using the software components provided in this repository is based on [SMACH](http://wiki.ros.org/smach).
+It is possible to check the [tutorials](http://wiki.ros.org/smach/Tutorials) related to SMACH, for an overview of its 
+functionalities. In addition, it is advised to exploit the [smach_viewer](http://wiki.ros.org/smach_viewer)
 node to visualize and debug the implemented Finite States Machine.
 
 ## Software Components
@@ -165,66 +158,7 @@ node to visualize and debug the implemented Finite States Machine.
 It follows the details of each software component implemented in this repository, which is available
 in the `scripts/` folder.
 
-### The `speech-eval` Node, its Message and Parameters
-
-<img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/speech-eval.png" width="600">
-
-The `speech-eval` node is a simple publisher that produces `Speech` messages in the 
-`/sensor/speech` topic. Each generated message has two fields: a time `stamp` and a 
-`command`. The latter is a string equal to `"Hello"`, when the interaction should start, or
-`"Bye"` when the interaction should end. Such keywords can be configured through the 
-`config/speech_commands` parameter (detailed below).
-
-This node allows publishing messages from the keyboard or in a randomized manner, and this can 
-be chosen with the `test/random_sense/active` parameter detailed below. When random messages are
-published, the `test/random_sense/speech_time` parameter is used to delay the generated 
-commands, which might not always be consistent for accounting perception errors (e.g., the command 
-`"???"` is sometimes published).
-
-To observe the behaviour of the `speech-eval` node you can run the following commands.
-```bash
-roscore
-# Open a new terminal.
-rosparam set config/speech_commands '["Hello", "Bye"]'
-rosrun arch_skeleton speech.py 
-# Open a new terminal
-rostopic echo /sensor/speech
-```
-With `rosparam` you might also set the `test/random_sense/active` and  
-`test/random_sense/speech_time` parameters (detailed below) to see how messages are differently
-published.
-
-### The `gesture-eval` Node, its Message and Parameters
-
-<img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/gesture-eval.png" width="600">
-
-The `gesture-eval` node is a simple publisher that produces `Gesture` messages in the 
-`sensor/gesture` topic. Each generated message has two fields: a time `stamp` and a `coordinate`.
-The latter is of type `Point` (defined in the `msg/` folder), which has two `float` sub-fields, 
-i.e., `x` and `y`.
-
-This node allows publishing messages from the keyboard or in a randomized manner, and this can be
-chosen with the `test/random_sense/active` parameter detailed below. When random messages are
-published, the `test/random_sense/gesture_time` parameter is used to delay the generated 
-messages, which encode a `coordinate` with random `x` and `y` based on the 
-`config/environment_size` parameter detailed below. To simulate possible perception error, this 
-node might generate `coordinates` that are out of the environment.
-
-
-To observe the behaviour of the `gesture-eval` node you can run the following commands.
-```bash
-roscore
-# Open a new terminal.
-rosparam set config/environment_size '[10,10]'
-rosrun arch_skeleton gesture.py 
-# Open a new terminal
-rostopic echo /sensor/speech 
-```
-With `rosparam` you might also set the `test/random_sense/active` and  
-`test/random_sense/gesture_time` parameters (detailed below) to see how messages are differently 
-published.
-
-### The `robot-state` Node, its Messages and Parameters
+### The `robot-battery-state` Node, its Messages and Parameters
 
 <img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/robot-state.png" width="900">
 
