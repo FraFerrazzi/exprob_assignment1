@@ -107,7 +107,7 @@ Each node inside the architecture is further explained. Also the general executi
 ### Repository Organization
 
 This repository contains a ROS package named `exprob_assignment1` that includes the following resources.
- - [CMakeList.txt](CMakeList.txt): File to configure this package.
+ - [CMakeLists.txt](CMakeLists.txt): File to configure this package.
  - [package.xml](package.xml): File to configure this package.
  - [setup.py](setup.py): File to `import` python modules from the `utilities` folder into the 
    files in the `script` folder. 
