@@ -168,13 +168,13 @@ The first diagram shows the state machine implemented in the code. The figure he
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/state_diagram.drawio.png" width="900">
 
 The state machine is composed by seven states, which are:
-- `Build World`
-- `Reasoner`
-- `Planner`
-- `Controller`
-- `Surveillance`
-- `Reach Charge`
-- `Charge`
+- `Build World`: state in which the Tbox of the ontology is loaded and then manipulated in order to create the desired environment according to the request. In fact, in this state the Abox of the ontology is built. It can be possible to save the ontology for debugging purposes by decommenting few lines of code in the `state_machine_helper.py` script.
+- `Reasoner`: state that queries the ontology to retreive essential informations used for the surveillance behavior of the robot. The reachable rooms are checked, and based on their urgency or the type of location the robot chooses where to go next.
+- `Planner`: state that plans a path of random via points going from the current point to a random target point defined inside the environment limits. This is not an actual planner but just a dummy implementation created to waste time.
+- `Controller`: state that receives the path of via points defined by the planner and wastes some time for each point defined in the path. This is not an actual controller that mekes the robot follow the desired path. It is just a dummy implementation of a real controller.
+- `Surveillance`: state in which the robot, once is arrived in a new location, checks the room. This is also a dummy implementation since state wastes time while it checks if a battery low stimulus arrives.
+- `Reach Charge`: state that makes the robot reach the charging location when its battery becomes low. This state sets as next location that needs to be reached the charging location 'E' and calls the `planner` and `controller` to simulate the motion of the robot.
+- `Charge`: state in which the robot charges its battery when it gest low. It is implemented by a blocking service that wastes time simulating the recharge action for a real battery. When the timer expires, the battery of the robot becomes full.
 
 ### Component diagram
 
