@@ -178,133 +178,28 @@ The state machine is composed by seven states, which are:
 
 ### Component diagram
 
-<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/component_diagram.drawio.png" width="900">
+In the follwoing image the component diagram is reported:
 
-The `planner` node implements an action server named `motion/planner`. This is done by the 
-means of the `SimpleActionServer` class based on the `Plan` action message. This action server 
-requires the `state/get_pose/` service of the `robot-state` node, and a `target` point given as goal.
+<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/component_diagram.drawio.png" width="800">
 
-Given the current and target points, this component returns a plan as a list of `via_points`, 
-which are randomly generated for simplicity. The number of `via_points` can be set with the 
-`test/random_plan_points` parameter addressed below. Moreover, each `via_point` is provided 
-after a delay to simulate computation, which can be tuned through the `test/random_plan_time` 
-parameter. When a new `via_points` is generated, the updated plan is provided as `feedback`. When
-all the `via_points` have been generated, the plan is provided as `results`.
+As shown in the diagrm, there are four nodes created by me which are present in the software architecture, plus an additional node (`ARMOR`) which was coded by the [EmaroLab](https://github.com/EmaroLab) group. \ 
+The latter node is essential to guarantee the communication between the ontology, developed with the software [Protèjè](https://protege.stanford.edu), and the ROS scripts created for this porject. \
+The other scripts are briefely described below:
+- `state_machine.py`: as can be clearly seen in the component diagram, this node is the core of the whole architecure. In fact, every other node later explained communicates with this script to ensure the correct behavior of the software. In this node, the final state machine of the project is implemented, which is composed by the earlier mentioned states: `Build World`, `Reasoner`, `Planner`, `Controller`, `Surveillance`, `Reach Charge` and `Charge`.  
+- `robot_battery_state.py`:
+- `planner.py`:
+- `controller.py`: 
 
-While the picture above shows the actual implementation of the action server, you should not 
-interact with it through the shown topics directly. Instead, you should use a 
-[SimpleActionClient](https://docs.ros.org/en/api/actionlib/html/classactionlib_1_1simple__action__client_1_1SimpleActionClient.html), 
-for instance, as:
-```python
-import actionlib
-from arch_skeleton.msg import PlanAction, PlanGoal
-...
-# Initialize the client and, eventually, wait for the server.
-client = actionlib.SimpleActionClient('motion/planner', PlanAction)
-client.wait_for_server()
-...
-def feedback_callback(feedback):
-    # Do something when feedback is provided.
-    pass  
-...
-def done_callback(status, results):
-    # Do something when results are provided.
-    pass  
-...
-# Send a new `goal`, which is a message of type `PlanGoal`.
-client.send_goal(goal, done_cb = done_callback, feedback_cb = feedback_callback)
-...
-# Get the action server state.
-client.get_state()
-...
-# Cancel all goals (or the current goal only, i.e., `client.cancel_goal()`).
-client.cancel_all_goals()
-```
-
-To observe the behaviour of the `planner` you can run the following commands.
-``` bash
-roscore
-# Open a new terminal.
-rosrun arch_skeleton robot_states.py
-# Open a new terminal.
-rosservice call /state/set_pose "pose: { x: 0.11,  y: 0.22}"
-rosparam set config/environment_size '[10,10]'
-rosrun arch_skeleton planner.py
-# Open a new terminal.
-rosrun actionlib_tools axclient.py /motion/planner
-```
-Then, a GUI should appear. Set the goal you want to reach and hit the send button. Eventually, you
-can cancel the goal as well. Also, you can change the `test/random_plan_points` and 
-`test/random_plan_time` parameters (detailed below) to tune the behaviour of the planner.
-
-The last command of the above fragment of code requires the `actionlib-tools` package, which can
-be installed done by typing:
-```bash
-sudo apt update
-sudo apt install ros-noetic-actionlib-tools
-```
+For a better overview regarding the scripts, I suggest to go back at the beginning of this REEDME file and check the Sphinx documentation for each script.
 
 
-### The `controller` Node, its Message and Parameters
+### Sequence diagram
 
 <img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/controller.png" width="900">
 
-The `controller` node implements an action server named `motion/controller`. This is done by 
-the means of the `SimpleActionServer` class based on the `Control` action message. This action 
-server requires the `state/set_pose/` service of the `robot-state` node and a plan given as a 
-list of `via_points` by the `planner`.
+---
 
-Given the plan and the current robot position, this component iterates for each planned 
-`via_point` and waits to simulate the time spent moving the robot to that location. The 
-waiting time can be tuned through the `test/random_motion_time` parameter detailed below. Each 
-time a `via_point` is reached the `state/set_pose` service is invoked, and a `feedback` is 
-provided. When the last `via_point` is reached, the action service provides a result by 
-propagating the current robot position, which has been already updated through the 
-`state/set_pose` service.
-
-Similarly to the `planner` above, instead of using the raw topics, you can rely on a 
-`SimpleActionClient`, which should be instantiated as:
-```python
-client = actionlib.SimpleActionClient('motion/controller', ControlAction)
-```
-This client would accept goals of type `ControlGoal`.
-
-To observe the behaviour of the `controller` you can run the following commands.
-``` bash
-roscore
-# Open a new terminal.
-rosrun arch_skeleton robot_states.py
-# Open a new terminal.
-rosservice call /state/set_pose "pose: { x: 0.11,  y: 0.22}"
-#rosparam set config/environment_size '[10,10]'
-rosrun arch_skeleton controller.py
-# Open a new terminal.
-rosrun actionlib_tools axclient.py /motion/controller
-```
-Then, the same GUI seen for the `planner` should appear. In this case, you can test goals 
-formatted as:
-```yaml
-via_points: 
-  - 
-    x: 0.109999999404
-    y: 0.219999998808
-  - 
-    x: 3.61638021469
-    y: 5.05489301682
-  - 
-    x: 0.292526483536
-    y: 6.59786701202
-  - 
-    x: 4.33828830719
-    y: 7.73262834549
-  - 
-    x: 6.0
-    y: 6.0
-```
-You can also change the `test/random_motion_time` parameter (detailed below) to tune
-the behaviour of the controller.
-
-### ROS Parameters
+## ROS Parameters
 
 This software requires the following ROS parameters.
  
