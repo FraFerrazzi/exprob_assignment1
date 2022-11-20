@@ -210,38 +210,30 @@ This software requires the following ROS parameters.
    numbers, i.e., `[x_max, y_max]`. The environment will have the `x`-th coordinate spanning
    in the interval `[0, x_max)`, while the `y`-th coordinate in `[0, y_max)`.
 
- - `test/random_plan_points`: It represents the number of via points in a plan, and it should be
-   a list of two integer numbers `[min_n, max_n]`. A random value within such an interval will be
-   chosen to simulate plans of different lengths.
+ - `test/random_plan_points`: It represents the number of via points in a plan. It is a list of n
+   elements, where n is a random value inside the interval: `[min_n, max_n]`. The chosen random value 
+   within such interval defines the length of each plan.
 
- - `test/random_plan_time`: It represents the time required to compute the next via point of the 
-   plan, and it should be a list of two float numbers, i.e., `[min_time, max_time]` in seconds. 
-   A random value within such an interval will be chosen to simulate the time required to 
-   compute the next via points.
+ - `test/random_plan_time`: It represents the time required to compute the next via point by the 
+   planner. The time is chosen randomly inside the `[min_time, max_time]` interval, which is in seconds. 
 
- - `test/random_motion_time`: It represents the time required to reach the next via point, and 
-   it should be a list of two float numbers, i.e., `[min_time, max_time]` in seconds. A random
-   value within such an interval will be chosen to simulate the time required to reach the next 
-   via points. 
-
- - `test/random_sense/active`: It is a boolean value that activates (i.e., `True`) or 
-   deactivates (`False`) the random-based generation of stimulus (i.e., speech, gesture and 
-   battery level). If this parameter is `True`, then the three parameters below are also 
-   required.  If it is `False`, then the three parameters below are not used.
+ - `test/random_motion_time`: It represents the time required to reach the next via point. The time 
+   is chosen randomly inside the `[min_time, max_time]` interval, which is in seconds.  
    
- - `test/random_sense/battery_charge`: It indicates the time passed within battery state changes 
-   (i.e., low/high). It should be a list of two float numbers, i.e., `[min_time, max_time]` in 
-   seconds, and the time passed between changes in battery levels will be a random value within 
-   such an interval.
+ - `test/random_sense/battery_charge`: It indicates the time necessary to recharge the battery of the 
+   robot. The time is chosen randomly inside the `[min_time, max_time]` interval, which is in seconds. 
+   
+ - `test/random_sense/active`: It is a boolean value that activates (i.e., `True`) or 
+   deactivates (`False`) the random-based generation of stimulus for the battery level.
+   If this parameter is `True`, then the parameter below is also 
+   required. If it is `False`, the parameter below is not used.
  
 
-In addition, the `random_sense.launch` also requires the following three parameters. This 
+In addition, the `surveillance_random.launch` also requires the following parameter. This 
 occurs because `test/random_sense/active` has been set to `True`.
 
- - `test/random_sense/battery_time`: It indicates the time passed within battery state changes 
-   (i.e., low/high). It should be a list of two float numbers, i.e., `[min_time, max_time]` in 
-   seconds, and the time passed between changes in battery levels will be a random value within 
-   such an interval.
+ - `test/random_sense/battery_time`: It indicates the time that needs to elapse to have a random low 
+   battery stimulus. The time is chosen randomly inside the `[min_time, max_time]` interval, which is in seconds.
 
 ---
 
