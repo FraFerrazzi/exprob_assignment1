@@ -152,7 +152,9 @@ to implement the project. \
 The Finite States Machine using the software components provided in this repository is based on [SMACH](http://wiki.ros.org/smach).
 It is possible to check the [tutorials](http://wiki.ros.org/smach/Tutorials) related to SMACH, for an overview of its 
 functionalities. In addition, it is advised to exploit the [smach_viewer](http://wiki.ros.org/smach_viewer)
-node to visualize and debug the implemented Finite States Machine.
+node to visualize and debug the implemented Finite States Machine. \
+Other dependencies are [xterm](https://manpages.ubuntu.com/manpages/trusty/man1/xterm.1.html) taht allows to open multiple terminals to have a clear view of what every single node does while the program is running. \
+Also [Armor](https://github.com/EmaroLab/armor) is essential in this project to use the ontology and ensure the desired behavior thought for the software architecture.
 
 ## Software Discussion
 
