@@ -163,7 +163,7 @@ The software architecure includes four python scripts, which are: `state_machine
 
 ### State diagram
 
-<img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/robot-state.png" width="900">
+<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/state_diagram.drawio.png" width="900">
 
 The `robot-state` is a node that encodes the knowledge shared among the other components, and it 
 implements two services (i.e., `state/set_pose` and `state/get_pose`) and a publisher (i.e., 
