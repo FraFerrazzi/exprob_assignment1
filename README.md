@@ -206,19 +206,9 @@ I have just made some changes to better fit my software architecture.
 
 This software requires the following ROS parameters.
  
- - `config/environment_size`: It represents the environment boundaries as a list of two float
+ - `config/environment_size`: It represents the environment boundaries as a list of two floating
    numbers, i.e., `[x_max, y_max]`. The environment will have the `x`-th coordinate spanning
    in the interval `[0, x_max)`, while the `y`-th coordinate in `[0, y_max)`.
-
- - `config/user_pose`: It represents the user's position as a list of two float numbers,
-   i.e., `[x, y]`. This pose should be within the `environmet_size`.
-
- - `config/speech_commands`: It defines the keywords that the user can say to start and end
-   the interaction. It must be a list made of two strings (e.g., `["Hello", "Bye"]`) that define
-   the keyword to start and end the interaction, respectively.
-
- - `state/initial_pose`: It represents the initial robot pose as a list of two float numbers, 
-   i.e., `[x, y]`. This pose should be within the `environmet_size`.
 
  - `test/random_plan_points`: It represents the number of via points in a plan, and it should be
    a list of two integer numbers `[min_n, max_n]`. A random value within such an interval will be
@@ -238,19 +228,15 @@ This software requires the following ROS parameters.
    deactivates (`False`) the random-based generation of stimulus (i.e., speech, gesture and 
    battery level). If this parameter is `True`, then the three parameters below are also 
    required.  If it is `False`, then the three parameters below are not used.
+   
+ - `test/random_sense/battery_charge`: It indicates the time passed within battery state changes 
+   (i.e., low/high). It should be a list of two float numbers, i.e., `[min_time, max_time]` in 
+   seconds, and the time passed between changes in battery levels will be a random value within 
+   such an interval.
  
 
 In addition, the `random_sense.launch` also requires the following three parameters. This 
 occurs because `test/random_sense/active` has been set to `True`.
-
- - `test/random_sense/gesture_time`: It indicates the time passed within two randomly generated 
-   pointing gestures. It should be a list of two float numbers, i.e., `[min_time, max_time]` in 
-   seconds, and the time passed between gestures will be a random value within such an interval.
-
- - `test/random_sense/speech_time`: It indicates the time passed within two randomly generated
-   commands based on speech. It should be a list of two float numbers, i.e., 
-   `[min_time, max_time]` in seconds, and the time passed between speech-based commands will be 
-   a random value within such an interval.
 
  - `test/random_sense/battery_time`: It indicates the time passed within battery state changes 
    (i.e., low/high). It should be a list of two float numbers, i.e., `[min_time, max_time]` in 
