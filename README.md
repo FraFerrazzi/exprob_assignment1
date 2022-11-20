@@ -163,49 +163,20 @@ The software architecure includes four python scripts, which are: `state_machine
 
 ### State diagram
 
+The first diagram shows the state machine implemented in the code. The figure helps to understand the logic of the project, which is reported below:
+
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/state_diagram.drawio.png" width="900">
 
-The `robot-state` is a node that encodes the knowledge shared among the other components, and it 
-implements two services (i.e., `state/set_pose` and `state/get_pose`) and a publisher (i.e., 
-`state/battery_low`). 
+The state machine is composed by seven states, which are:
+- `Build World`
+- `Reasoner`
+- `Planner`
+- `Controller`
+- `Surveillance`
+- `Reach Charge`
+- `Charge`
 
-The services allow setting and getting the current robot position, which is shared between the 
-`planner` and the `controller` as detailed below. In particular, the `state/set_pose` requires a 
-`Point` to be set and returns nothing, while the `state/get_pose` requires nothing and return
-a `Point` encoding the robot pose. 
-
-Note that a client should set the initial robot position when the architecture startups. 
-
-Also, note that, for more general architectures, the robot pose might be published in a topic, 
-instead of being provided through a server. This is because many components might require the 
-current robot pose, which might change frequently. However, this example does not consider such a case.
-
-Moreover, the `robot-state` also implements a publisher of `Boolean` messages into the `state/
-battery_low` topic. This message is published when the batter changes state. We consider two 
-possible states: low battery (i.e., `True` is published) and recharged (i.e., `False` is 
-published).
-
-The battery-related publisher allows publishing messages from the keyboard or in a randomized 
-manner, and this can be chosen with the `test/random_sense/active` parameter detailed below. 
-When random messages are published, the `test/random_sense/battery_time` parameter is used to 
-delay the published messages.
-
-To observe the behaviour of the `robot-state` node you can run the following commands.
-```bash
-roscore
-# Open a new terminal.
-rosrun arch_skeleton robot-state.py 
-# Open a new terminal
-rostopic echo /state/battery_low 
-# Open a new terminal 
-rosservice call /state/set_pose "pose: { x: 1.11,  y: 2.22}"
-rosservice call /state/get_pose "{}" 
-```
-With `rosparam` you might also set the `test/random_sense/active` and  
-`test/random_sense/battery_time` parameters (detailed below) to see how messages are 
-differently published.
-
-### The `planner` Node, its Message and Parameters
+### Component diagram
 
 <img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/planner.png" width="900">
 
