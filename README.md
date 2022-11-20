@@ -178,7 +178,7 @@ The state machine is composed by seven states, which are:
 
 ### Component diagram
 
-<img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/planner.png" width="900">
+<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/component_diagram.drawio.png" width="900">
 
 The `planner` node implements an action server named `motion/planner`. This is done by the 
 means of the `SimpleActionServer` class based on the `Plan` action message. This action server 
