@@ -26,7 +26,7 @@ PARAM_RANDOM_ACTIVE = 'test/random_sense/active'
 
 
 # The name of parameter to set the initial robot position.
-PARAM_INITIAL_POSE = 'state/initial_pose'
+#PARAM_INITIAL_POSE = 'state/initial_pose'
 # ---------------------------------------------------------
 
 
