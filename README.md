@@ -185,13 +185,14 @@ In the follwoing image the component diagram is reported:
 As shown in the diagrm, there are four nodes created by me which are present in the software architecture, plus an additional node (`ARMOR`) which was coded by the [EmaroLab](https://github.com/EmaroLab) group. \ 
 The latter node is essential to guarantee the communication between the ontology, developed with the software [Protèjè](https://protege.stanford.edu), and the ROS scripts created for this porject. \
 The other scripts are briefely described below:
-- `state_machine.py`: as can be clearly seen in the component diagram, this node is the core of the whole architecure. In fact, every other node later explained communicates with this script to ensure the correct behavior of the software. In this node, the final state machine of the project is implemented, which is composed by the earlier mentioned states: `Build World`, `Reasoner`, `Planner`, `Controller`, `Surveillance`, `Reach Charge` and `Charge`.  
-- `robot_battery_state.py`:
-- `planner.py`:
-- `controller.py`: 
+- `state_machine.py`: as can be clearly seen in the component diagram, this node is the core of the whole architecure. In fact, every other node later explained communicates with this script to ensure the correct behavior of the software. In this node, the final state machine of the project is implemented, which is composed by the earlier mentioned states: `Build World`, `Reasoner`, `Planner`, `Controller`, `Surveillance`, `Reach Charge` and `Charge`. To support this node, an helper class was created, which is present in the `state_machine_helper.py` node that implements some methods called inside the `state_machine.py`.
+- `robot_battery_state.py`: this nodes is responsible for managing the robot's battery level. It can give a battery low signal in two ways: randomly after a delay, manually waiting for the user's input. When the battery becomes low, a service is called to recharge the battery which is also implemented in this node. The commnuication with the `state_machine.py` node is possible thanks to the `SetBool.srv` standard service.
+- `planner.py`: it is a node that, given the current position and the target position, returns a path of random via points. It is not an actual planner since the path has no physical meaning but it is just done to waste time. The commnuication with the `state_machine.py` node is possible thanks to the `Plan.action` action service.
+- `controller.py`: it is a node that, given the path of via points created by the planner, simulates the motion of the robot based on a random delay between each point. It is not an actual controller since it does not control the movement of the robot but it is just done to waste time. The commnuication with the `state_machine.py` node is possible thanks to the `Control.action` action service.
 
-For a better overview regarding the scripts, I suggest to go back at the beginning of this REEDME file and check the Sphinx documentation for each script.
-
+For a better overview regarding the scripts, I suggest to go back at the beginning of this REEDME file and check the Sphinx documentation. \
+The nodes `robot_battery_state.py`, `planner.py` and `controller.py` were previously implemented by the Professor [buoncubi](https://github.com/buoncubi), foundable in the [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository. The names of the scripts are rispectively: `robot_states.py`, `planner.py` and `controller.py`. \
+I have just made some changes to better fit my software architecture.
 
 ### Sequence diagram
 
