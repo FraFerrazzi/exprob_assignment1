@@ -11,9 +11,9 @@ Click on the following link !!!!!!!ADD LINK!!!!!!!! to visualize the Sphinx docu
 ## Introduction
 
 This repository contains ROS-based software architecture that simulates a robot used for surveillance purposes.
-The robot is placed inside in a known indoor environment. \
-The robot's objective is to go around the map, simulating a survaillance task when it gets inside a location.
-The program interacts with an ontology to retrieve essential informations to achieve the desired behavior. \
+The robot is placed inside a known indoor environment. \
+The robot's objective is to go around the map, simulating a surveillance task when it gets inside a location.
+The program interacts with an ontology to retrieve essential information to achieve the desired behavior. \
 A short video shows the execution of the software architecture:
 
 !!!!!!!!PUT THE VIDEO!!!!!!!!!!!
@@ -23,10 +23,10 @@ A short video shows the execution of the software architecture:
 This software is based on ROS Noetic, and it has been developed with this Docker-based
 [environment](https://hub.docker.com/repository/docker/carms84/exproblab), which already 
 provides the required dependencies. \ 
-If the Docker image is not used, it is necesscessary to download some essential packages. If a new version of ROS is installed on your machine, the suggestion is to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7. \
-Instead, if a older version of ROS is present in your machine, please refer to: https://github.com/EmaroLab/armor. \
-In either cases, the procedure explained in the REEDME files should be followed and the needed repositories must be cloned and built in your ROS workspace. \
-After Armor has been correctly downloaded and built, the current [repository](https://github.com/FraFerrazzi/exprob_assignment1) of this project must be downloaded and built in a ROS workspace, typing the following command in the terminal:
+If the Docker image is not used, it is necessary to download some essential packages. If a new version of ROS is installed on your machine, the suggestion is to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7. \
+Instead, if an older version of ROS is present in your machine, please refer to: https://github.com/EmaroLab/armor. \
+In both cases, the procedure explained in the README files should be followed and the needed repositories must be cloned and built in your ROS workspace. \
+After Armor has been correctly downloaded and built, the current [repository](https://github.com/FraFerrazzi/exprob_assignment1) regarding this project must be downloaded and built in the ROS workspace, typing the following command in the terminal:
 ```bash
 cd <absolute path to your ros_workspace>/src
 git clone https://github.com/FraFerrazzi/exprob_assignment1.git
@@ -43,59 +43,61 @@ Use the following command to launch the software with randomized stimulus for th
 ```bash
 roslaunch exprob_assignemnt1 surveillance_random.launch
 ``` 
-Two new terminal windows are going to be opened, making a total of three windows opened at the same time. \
-One corresponds to the `state_machine.py` GUI that gives a visual feedback of what is happening during the execution of the software architecture. One shows the computations and passages done by the `planner.py` and `controller.py` scripts. The last, shows a user interface regarding the battery state of the controlled by the `robot_battery_state.py` node.
+Three new terminal windows are going to be opened, making a total of four windows open at the same time. \
+One corresponds to the `state_machine.py` GUI which gives visual feedback on what is happening during the execution of the software architecture. One terminal illustrates the computation done by the `planner.py`. Another one allows the visualization of the execution of the `controller.py`. The last shows a user interface regarding the battery level, controlled by the `robot_battery_state.py` node.
 
 ---
 
 ## Description
 
-The project consist in creating the software architecture for a naive survaillance robot located inside 
-an indoor 2D environment. \
-The layout of the environment is randomically generated, but its structure remains the same.
-It has 4 rooms, 3 corridors and 7 doors and can be shcmatized by the following image:
+The project consists in creating the software architecture for a naive surveillance robot located inside an indoor 2D environment. \
+The layout of the environment is randomly generated, but its structure remains the same.
+It has 4 rooms, 3 corridors, and 7 doors and can be schematized by the following image:
 
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/env-structure.png" width="500">
 
-The difference between a room and a corridor is that a corridor has more than one door allowing the communication with multiple rooms. \
+The difference between a room and a corridor is that a corridor has more than one door allowing communication with multiple rooms. \
 This map is generated by interacting with an ontology defined using the software [Protèjè](https://protege.stanford.edu) and the [Armor](https://github.com/EmaroLab/armor) ontology manager. \
 The robot starts in a pre-defined initial location (which is 'E') and waits until the topological map has been correctly initialized and defined. \
-Once the map is completed, the robot moves in a new location and waits some time to simulate a 
-survaillance task. Once the location has been explored, the robot visits another location. \
-When the battery of the robot is low a charging mechanism is implemented.
-The charging procedure for the robot is to reach the charging location, which si the 'E' corridor, and simulate a charging task by wasting time in that specific location. \
-When the battery is fully charged the robot starts again his defined survaillance behavior. \
+Once the map is completed, the robot moves to a new location and waits some time to simulate a 
+surveillance task. Once the location has been explored, the robot visits another location. \
+When the battery of the robot is low, a charging mechanism is implemented.
+The charging procedure for the robot is to reach the charging location, which is the 'E' corridor, and simulate a charging task by wasting time in that specific location. \
+When the battery is fully charged the robot starts again his defined surveillance behavior. \
 When the robot's battery is not low, the robot moves in the environment according to the following 
-survaillance policy:
-- The robot stays mainly on corridors.
+surveillance policy:
+- The robot stays mainly in corridors.
 - If a reachable room has not been visited for some time, it becomes urgent and the robot should visit it.
 
-The urgency of a specific location is determined by computing the difference between the last time that the robot has moved and the last time that the same location has been visited.
+The urgency of one location is determined by computing the difference between the last time that the robot moved and the last time that the issued location has been visited. When this difference becomes higher than a threshold, the specific location becomes urgent.
+
 
 ## Assumptions
 
-For simplicity and showing purposes, we consider a scenario with the following assumptions.
- - The robot moves in a 2D, pre-defined and known environment without obstacles.
- - Rooms have only one door, corridors have at least two doors but one location can only have one door shared with another location.
- - The charging loction is also the initial location of the robot, and it is pre-defined.
- - The number of rooms, corridors and doors is fixed, only the layout changes.
- - The planner node does not implement a real planner. It creates a path composed by randomic via-points. Between the different via-points there is a delay to simulate computation. The planner is used just to waste time.
- - The controller node does not implement a real controller. It does not guide the robot nor make the robot follow the path generated by the planner. As the planner, the controller is used to waste time putting a delay between the via-points of the path.
- - The battery can become low at any time, and the robot should immediately react to this event. The battery low is a signal that does not keep into account the true level of charge of the battery.
- - When a battery low signal comes, all the previous plans and controls are delayed and the reasoning done by the `reasoner()` method is not saved. In this way the robot must reason again before going in the next location.
- - The choice of the next location that will be visited keeps into account only temporal stimulus, excluding data that could come from sensors such as cameras or mircophones.
- - The robot only simulates a survaillance task, so there is not an actual survaillance of the environment.
- - The recharge of the battery does not actually charges a battery but just waste time to simulate the task.
- - The timestamp of the robot and the timestamp of the location which the robot visits are updated when the robot gets in the issued location, so when the `controller()` method has done its execution.
+During the development of the project, some simplified assumptions were done to make an easier model of a surveillance robot:
+ - The robot moves in a 2D, pre-defined, therefore known environment without obstacles.
+ - Rooms have only one door and corridors have at least two doors. One location can only have one door shared with another location.
+ - The charging location is also the initial location of the robot, and it is pre-defined.
+ - The number of rooms, corridors, and doors is fixed, only the layout changes.
+ - The planner node does not implement a real planner. It creates a path composed of random via points. Between the different via points there is a delay to simulate computation. The planner is used mainly to waste time.
+ - The controller node does not implement a real controller. It does not guide the robot nor make the robot follow the path generated by the planner. As the planner, the controller is used to waste time putting a delay between the via points of the path.
+ - The battery can become low at any time, and the robot immediately reacts to this event. 
+ - The battery low is a signal that does not keep into account the true level of charge of the battery. The signal arrives when a random delay expires.
+ - The reasoner state is considered to be atomic. In this way, even if a battery low signal arrives, the ontology query keeps working until it is not done. This decision was made since the robot does not move while it is reasoning and the process lasts few instants, which is neglectable compared to other functions.
+ - When a battery low signal comes, all the previous plans and controls are delayed and the reasoning done by the `reasoner()` method is changed by imposing the charge location as next room to reach. In this way, the robot must reason again before going to the next location.
+ - The choice of the next location that will be visited keeps into account only temporal stimulus, excluding data that could come from sensors such as cameras or microphones.
+ - The robot only simulates a surveillance task, so there is no actual surveillance of the environment.
+ - The recharge of the battery does not charge a battery but just wastes time to simulate the task.
+ - The timestamp of the robot and the timestamp of the location which the robot visits are updated when the robot gets to the issued location, so when the `controller()` method has done its execution.
  - When the battery status becomes low, the robot reaches the charging location even if it is not reachable at the moment.
-
+ 
 ## Limitations
 
-Most of the limitations derive from the hypothesis that were done while implementing the software architecture. \
-The fact that the environment is 2D constraint the map to be allocated only on one floor, without the possibility of having stairs or slopes. Also the structure is fixed, so it has a pre-defined number of rooms, corridors and doors. There would be the need to change a bit the code to maintain a reasonable structure for an indoor environment if one of this numbers needs to be changed. \
-The planner and the controller as the survaillance task and the charge of the battery are purley done to waste time, giving limitations to the actual tasks that the robot can perform. For example, the robot can not deduce if there is a person in the room or cannot generate a reasonable path to go from one location to another. \
+Most of the limitations derive from the hypothesis that were done during the implementation of the software architecture. \
+The fact that the environment is in 2D constrains the map to be allocated only on one floor, without the possibility of having stairs or slopes. Also, the structure is fixed, so it has a pre-defined number of rooms, corridors, and doors. There would be the need to change a bit the code to maintain a reasonable structure for an indoor environment if one of these numbers needs to be changed. \
+The planner and the controller as the surveillance task and the charge of the battery are purely done to waste time, giving limitations to the actual tasks that the robot can perform. For example, the robot can not deduce if there is a person in the room or cannot generate a reasonable path to go from one location to another. \
 The robot can only check the urgency of adjacent locations that it can reach in a specific time instant, excluding all the locations that are not reachable in the same time instant. \
-The robot states that a location is urgent only based on the timeslot for which the issued location has not been visited for, not careing about other possible stimulus.
+The robot states that a location is urgent only based on the timeslot for which the issued location has not been visited, not caring about other possible stimuli.
 
 ---
 
