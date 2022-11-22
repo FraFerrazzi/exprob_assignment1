@@ -103,9 +103,9 @@ The robot states that a location is urgent only based on the timeslot for which 
 
 ## Software Architecture
 
-The software architecture of the project is further explained in this section. \
-First of all the general organization of the repository and the dependencies are pointed out. \
-Later on, the general execution of the architecture is discussed with the help of esplicative diagrams.
+The software architecture of the project is further explained in this section. 
+First of all the general organization of the repository and the dependencies are pointed out. 
+Later on, the general execution of the architecture is discussed with the help of explicative diagrams.
 
 ### Repository Organization
 
@@ -115,18 +115,18 @@ This repository contains a ROS package named `exprob_assignment1` that includes 
  - [setup.py](setup.py): File to `import` python modules from the `utilities` folder into the 
    files in the `script` folder. 
  - [launcher/](launcher/): Contains the configuration to launch this package.
-    - [surveillance_manual.launch](launcher/surveillance_manual.launch): It launches this package allowing 
-       to set manually when the battery state becomes low.
+    - [surveillance_manual.launch](launcher/surveillance_manual.launch): It launches this package allowing to manually set when
+      the battery state becomes low.
     - [surveillance_random.launch](launcher/surveillance_random.launch): It launches this package with 
-      random-based stimulus for the battery status.
+      a random-based stimulus for the battery status.
  - [msg/](msg/): It contains the message exchanged through ROS topics.
     - [Point.msg](msg/Point.msg): It is the message representing a 2D point.
  - [action/](action/): It contains the definition of each action server used by this software.
-    - [Plan.action](action/Plan.action): It defines the target and the current points, the feedback and the results concerning 
+    - [Plan.action](action/Plan.action): It defines the target and the current points, the feedback, and the results concerning 
       motion planning.
-    - [Control.action](action/Control.action): It defines the goal, the feedback and the results 
+    - [Control.action](action/Control.action): It defines the goal, the feedback, and the results 
       concerning motion controlling.
- - [scripts/](scripts/): It contains the implementation of each software components.
+ - [scripts/](scripts/): It contains the implementation of each software component.
     - [state_machine.py](scripts/state_machine.py): It implements the final state machine for the software architecture.
     - [robot_battery_state.py](scripts/robot_battery_state.py): It implements the management of the robot's battery level.
     - [planner.py](scripts/planner.py): It is a dummy implementation of a motion planner.
@@ -141,13 +141,13 @@ This repository contains a ROS package named `exprob_assignment1` that includes 
  - [diagrams/](diagrams/): It contains the diagrams shown below in this README file.
  - [doc/](doc/): It contains the files to visualize the Sphinx documentation.
  - [topological_map/](topological_map/): It contains the Tbox of the ontology used in this software
-   architecture. It is also the repository in which the complete ontology is saved for debug purposes.
+   architecture. It is also the repository in which the complete ontology is saved for debugging purposes.
 
 ### Dependencies
 
 The software exploits [roslaunch](http://wiki.ros.org/roslaunch) and 
 [rospy](http://wiki.ros.org/rospy) for using python with ROS. Rospy allows defining ROS nodes, 
-services and related messages. \
+services, and related messages. \
 Also, the software uses [actionlib](http://wiki.ros.org/actionlib/DetailedDescription) to define
 action servers. In particular, this software is based on the use of the [SimpleActionServer](http://docs.ros.org/en/jade/api/actionlib/html/classactionlib_1_1simple__action__server_1_1SimpleActionServer.html#a2013e3b4a6a3cb0b77bb31403e26f137) and the [SimpleActionClient](https://docs.ros.org/en/api/actionlib/html/classactionlib_1_1simple__action__client_1_1SimpleActionClient.html)
 to implement the project. \
@@ -155,48 +155,48 @@ The Finite States Machine using the software components provided in this reposit
 It is possible to check the [tutorials](http://wiki.ros.org/smach/Tutorials) related to SMACH, for an overview of its 
 functionalities. In addition, it is advised to exploit the [smach_viewer](http://wiki.ros.org/smach_viewer)
 node to visualize and debug the implemented Finite States Machine. \
-Other dependencies are [xterm](https://manpages.ubuntu.com/manpages/trusty/man1/xterm.1.html) taht allows to open multiple terminals to have a clear view of what every single node does while the program is running. \
-Also [Armor](https://github.com/EmaroLab/armor) is essential in this project to use the ontology and ensure the desired behavior thought for the software architecture.
+Another dependency is [xterm](https://manpages.ubuntu.com/manpages/trusty/man1/xterm.1.html) which allows opening multiple terminals to have a clear view of what every single node does while the program is running. \
+Also, [Armor](https://github.com/EmaroLab/armor) is essential in this project to use the ontology and ensure the desired behavior thought for the software architecture.
 
 ## Software Discussion
 
-The software architecure includes four python scripts, which are: `state_machine.py`, `planner.py`, `controller.py`, `robot_battery_state.py`. There is an additional script: `state_machine_helper.py`, which implements all the methods in the `state_machine.py` script. The functioning of the program is explained below, using also some esplicative diagrams such as:
+The software architecture includes four python scripts, which are: `state_machine.py`, `planner.py`, `controller.py`, and `robot_battery_state.py`. There is an additional script: `state_machine_helper.py`, which implements all the methods called in the `state_machine.py` script. The functioning of the program is explained below, using also some explicative diagrams such as:
 - State diagram.
 - Component diagram.
 - Sequence diagram.
 
 ### State diagram
 
-The first diagram shows the state machine implemented in the code. The figure helps to understand the logic of the project, which is reported below:
+The first diagram shows the state machine implemented in the code. The figure helps to understand the logic of the project:
 
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/state_diagram.drawio.png" width="900">
 
-The state machine is composed by seven states, which are:
-- `Build World`: state in which the Tbox of the ontology is loaded and then manipulated in order to create the desired environment according to the request. In fact, in this state the Abox of the ontology is built. It can be possible to save the ontology for debugging purposes by decommenting few lines of code in the `state_machine_helper.py` script.
-- `Reasoner`: state that queries the ontology to retreive essential informations used for the surveillance behavior of the robot. The reachable rooms are checked, and based on their urgency or the type of location the robot chooses where to go next.
-- `Planner`: state that plans a path of random via points going from the current point to a random target point defined inside the environment limits. This is not an actual planner but just a dummy implementation created to waste time.
-- `Controller`: state that receives the path of via points defined by the planner and wastes some time for each point defined in the path. This is not an actual controller that mekes the robot follow the desired path. It is just a dummy implementation of a real controller.
-- `Surveillance`: state in which the robot, once is arrived in a new location, checks the room. This is also a dummy implementation since state wastes time while it checks if a battery low stimulus arrives.
+The state machine is composed of seven states, which are:
+- `Build World`: state in which the Tbox of the ontology is loaded and then manipulated to create the desired environment according to the request. This state builds the Abox of the ontology. It can be possible to save the ontology for debugging purposes by uncommenting a few lines of code in the `state_machine_helper.py` script (lines: 264-265).
+- `Reasoner`: state that queries the ontology to retrieve essential information used for the surveillance behavior of the robot. The reachable rooms are checked and the robot chooses where to go next based on their urgency or the type of location.
+- `Planner`: state that plans a path of random via points going from the current point to a random target point defined inside the environmental limits. This is not an actual planner but just a dummy implementation created to waste time.
+- `Controller`: state that receives the path composed of via points defined by the planner and wastes some time for each point defined in the path. This is not an actual controller that makes the robot follow the desired path. It is just a dummy implementation of a real controller.
+- `Surveillance`: state in which the robot, once it arrives in a new location, checks the room. This is also a dummy implementation since the state wastes time while it checks if a battery-low stimulus arrives.
 - `Reach Charge`: state that makes the robot reach the charging location when its battery becomes low. This state sets as next location that needs to be reached the charging location 'E' and calls the `planner` and `controller` to simulate the motion of the robot.
-- `Charge`: state in which the robot charges its battery when it gest low. It is implemented by a blocking service that wastes time simulating the recharge action for a real battery. When the timer expires, the battery of the robot becomes full.
+- `Charge`: state in which the robot charges its battery when it gets low. It is implemented using a blocking service that wastes time simulating the recharge action for a real battery. When the timer expires, the battery of the robot becomes full.
 
 ### Component diagram
 
-In the follwoing image the component diagram is reported:
+In the following image the component diagram is reported:
 
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/component_diagram.drawio.png" width="800">
 
-As shown in the diagrm, there are four nodes created by me which are present in the software architecture, plus an additional node (`ARMOR`) which was coded by the [EmaroLab](https://github.com/EmaroLab) group. \ 
-The latter node is essential to guarantee the communication between the ontology, developed with the software [Protèjè](https://protege.stanford.edu), and the ROS scripts created for this porject. \
-The other scripts are briefely described below:
-- `state_machine.py`: as can be clearly seen in the component diagram, this node is the core of the whole architecure. In fact, every other node later explained communicates with this script to ensure the correct behavior of the software. In this node, the final state machine of the project is implemented, which is composed by the earlier mentioned states: `Build World`, `Reasoner`, `Planner`, `Controller`, `Surveillance`, `Reach Charge` and `Charge`. To support this node, an helper class was created, which is present in the `state_machine_helper.py` node that implements some methods called inside the `state_machine.py`.
-- `robot_battery_state.py`: this nodes is responsible for managing the robot's battery level. It can give a battery low signal in two ways: randomly after a delay, manually waiting for the user's input. When the battery becomes low, a service is called to recharge the battery which is also implemented in this node. The commnuication with the `state_machine.py` node is possible thanks to the `SetBool.srv` standard service.
-- `planner.py`: it is a node that, given the current position and the target position, returns a path of random via points. It is not an actual planner since the path has no physical meaning but it is just done to waste time. The commnuication with the `state_machine.py` node is possible thanks to the `Plan.action` action service.
-- `controller.py`: it is a node that, given the path of via points created by the planner, simulates the motion of the robot based on a random delay between each point. It is not an actual controller since it does not control the movement of the robot but it is just done to waste time. The commnuication with the `state_machine.py` node is possible thanks to the `Control.action` action service.
+As shown in the diagram, there are four nodes implemented for the software architecture, plus an additional node (`ARMOR`) which was coded by the [EmaroLab](https://github.com/EmaroLab) group. \ 
+The latter node is essential to guarantee the communication between the ontology, developed with the software [Protèjè](https://protege.stanford.edu), and the ROS scripts created for this project. \
+The other scripts are briefly described below:
+- `state_machine.py`: as can be seen in the component diagram, this node is the core of the whole architecture. Every other node later explained communicates with this script to ensure the correct behavior of the software. In this node, the final state machine of the project is implemented, which initializes and manages the earlier mentioned states: `Build World`, `Reasoner`, `Planner`, `Controller`, `Surveillance`, `Reach Charge`, and `Charge`. To support this node, a helper class was created, which is present in the `state_machine_helper.py` node that implements some methods called inside the `state_machine.py`.
+- `robot_battery_state.py`: this node is responsible for managing the robot's battery level. It can give a battery low signal in two ways: randomly after a delay, manually waiting for the user's input. When the battery becomes low, a service is called to recharge the battery which is also implemented in this node. The communication with the `state_machine.py` node is possible thanks to the `SetBool.srv` standard service.
+- `planner.py`: it is a node that, given the current position and the target position, returns a path of random via points. It is not an actual planner since the path has no physical meaning but it is just done to waste time. Communication with the `state_machine.py` node is possible thanks to the `Plan.action` action service.
+- `controller.py`: it is a node that, given the path of via points created by the planner, simulates the motion of the robot based on a random delay between each point. It is not an actual controller since it does not control the movement of the robot but it is just done to waste time. Communication with the `state_machine.py` node is possible thanks to the `Control.action` action service.
 
-For a better overview regarding the scripts, I suggest to go back at the beginning of this REEDME file and check the Sphinx documentation. \
-The nodes `robot_battery_state.py`, `planner.py` and `controller.py` were previously implemented by the Professor [buoncubi](https://github.com/buoncubi), foundable in the [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository. The names of the scripts are rispectively: `robot_states.py`, `planner.py` and `controller.py`. \
-I have just made some changes to better fit my software architecture.
+For a better overview of the scripts, I suggest going back to the beginning of this README file and checking the Sphinx documentation. \
+The nodes `robot_battery_state.py`, `planner.py`, and `controller.py` were previously implemented by Professor [buoncubi](https://github.com/buoncubi), foundable in the [arch_skeleton](https://github.com/buoncubi/arch_skeleton) repository. The names of the scripts are respectively: `robot_states.py`, `planner.py`, and `controller.py`. \
+I have made some changes to the previously mentioned scripts to better fit the current software architecture.
 
 ### Sequence diagram
 
@@ -214,7 +214,7 @@ This software requires the following ROS parameters.
 
  - `test/random_plan_points`: It represents the number of via points in a plan. It is a list of n
    elements, where n is a random value inside the interval: `[min_n, max_n]`. The chosen random value 
-   within such interval defines the length of each plan.
+   within such an interval defines the length of each plan.
 
  - `test/random_plan_time`: It represents the time required to compute the next via point by the 
    planner. The time is chosen randomly inside the `[min_time, max_time]` interval, which is in seconds. 
@@ -243,10 +243,10 @@ occurs because `test/random_sense/active` has been set to `True`.
 
 The improvements regarding this software architecture would be to solve some limitations present in the system, by making more realistic assumptions. \
 A list of possible ideas is reported below:
-- Put sensors to the robot. In this way it could be possible to make it work on a 3D environment which do not have to be pre-determined. Also, if the robot is equipped with the correct sensors, it could be possible to actually perform a survaillance action, not just simulating it.
-- The robot is able to know its position and the position that it needs to reach in the environment. In this way, the `planner()` and the `controller()` methods could actually give a reasonable path to go from the current location to the target location by a set of via-points, and controlling the wheels of the robot in such a way that it follows the desired path.
-- Provide a real battery to the robot. In this way it could be possible to actually implement a charging action once the battery is low.
-- Create a simulation environment in which the robot can be tested to see the correctess of the algorithms and test its possibilities in different maps, trying also on outdoor environments.
+- Put sensors on the robot. In this way, it could be possible to make it work in a 3D environment which does not have to be pre-determined. Also, if the robot is equipped with the correct sensors, it could be possible to perform a surveillance action and not just simulate it.
+- The robot can know its position and the position that it needs to reach in the environment. In this way, the `planner()` and the `controller()` methods could give a reasonable path to go from the current location to the target location by a set of via-points, and controlling the wheels of the robot in such a way that it follows the desired path.
+- Provide a real battery to the robot. In this way, it could be possible to implement a charging action once the battery is low.
+- Create a simulation environment in which the robot can be tested to see the correctness of the algorithms and test its possibilities in different maps, trying also on outdoor environments.
 
 ---
 
