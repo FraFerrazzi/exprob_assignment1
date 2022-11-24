@@ -200,7 +200,7 @@ I have made some changes to the previously mentioned scripts to better fit the c
 
 ### Sequence diagram
 
-<img src="https://github.com/buoncubi/arch_skeleton/blob/main/diagrams/controller.png" width="900">
+<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/sequence_diagram.drawio.png" width="800">
 
 ---
 
