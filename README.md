@@ -90,6 +90,7 @@ During the development of the project, some simplified assumptions were done to 
  - The recharge of the battery does not charge a battery but just wastes time to simulate the task.
  - The timestamp of the robot and the timestamp of the location which the robot visits are updated when the robot gets to the issued location, so when the `controller()` method has done its execution.
  - When the battery status becomes low, the robot reaches the charging location even if it is not reachable at the moment.
+ - All the locations inside the map are set to be URGENT when the program is launched. The assumption is that the robot has not moved in a long time, therefore has not visited any location for a period longer than the threshold.
  
 ## Limitations
 
@@ -199,6 +200,9 @@ The nodes `robot_battery_state.py`, `planner.py`, and `controller.py` were previ
 I have made some changes to the previously mentioned scripts to better fit the current software architecture.
 
 ### Sequence diagram
+
+The state diagram focuses the timing of the communication between the different nodes. \
+The beginning corresponds to the instant in which the software architecture is launched. In the diagram is shown the case in which the `battery_low = False` for a full execution cycle and becomes `battery_low = True` after the `state_machine.py` retrieves from the ARMOR service the information regarding the new location and the updated timestamp.
 
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/sequence_diagram.drawio.png" width="800">
 
