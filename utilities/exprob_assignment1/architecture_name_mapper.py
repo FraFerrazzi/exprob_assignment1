@@ -32,7 +32,7 @@ NODE_ROBOT_BATTERY_STATE = 'robot-battery-state'
 # The name of the topic where the battery state is published.
 TOPIC_BATTERY_LOW = 'state/battery_low'
 
-# The name of the topic where the recharge state is published.
+# The name of the service solving the recharge of the robot.
 TOPIC_RECHARGE = 'state/recharge'
 
 # The delay for the battery to become low, i.e., from high to low.

@@ -14,6 +14,12 @@ The second one is to set battery_low = True manually, retrieving the input from 
 When the battery becomes low, the transition is published.
 The node also implements a service responsible for charging the robot after a timer expires.
 The service is blocking and after the battery is charged, the response is sent to the client.
+
+Publishes to:
+	/state/battery_low the battery level of the robot
+	
+Service:
+	/state/recharge to charge the robot
 		
 """
 

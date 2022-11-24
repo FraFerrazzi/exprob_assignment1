@@ -10,7 +10,17 @@ Master program. The software architecture allows initializing a helper class for
 which controls the behavior of a surveillance robot. 
 This node allows to have cleaner and more readable code in the state_machine.py node, in fact, every task
 called in the previously mentioned code is defined in the current node.
-		
+
+Subscribes to:
+	/state/battery_low where the state of the battery is published
+	
+Service:
+	/state/recharge to charge the robot
+	/armor_interface_srv to communicate with the ontology
+	
+Action Service:
+	/motion/planner to make the planner create the desired path
+	/motion/controller to make the controller follow the desired path
 """
 
 import threading
@@ -253,7 +263,7 @@ class Helper:
 		ARGS = ['isIn', 'Robot1', self.prev_loc]
 		ontology_manager('ADD', 'OBJECTPROP', 'IND' , ARGS)
 		# Get the current time
-		self.timer_now = str(int(time.time()))  
+		self.timer_now = str(0) # This is done to make every room URGENT at the beginning  
 		# Start the timestamp in every location to retrieve when a location becomes urgent
 		for g in location_number:
 			ARGS = ['visitedAt', self._locations[g], 'Long', self.timer_now]
@@ -445,7 +455,7 @@ class Helper:
 			self.mutex.release()    # release the mutex
 	
 			
-	def _battery_low(self):
+	def ret_battery_low(self):
 		""" 
 		Get the value of the variable responsible for stating the power level of the battery
 		of the robot. 
@@ -638,7 +648,7 @@ class Helper:
 		self.mutex.release()    # release the mutex
 		
 	
-	def _surveillance(self):
+	def do_surveillance(self):
 		""" 
 		It simulates a survaillance task of the location in which the robot arrives when the 
 		controller has done its execution. 

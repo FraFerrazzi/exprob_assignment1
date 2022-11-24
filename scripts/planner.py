@@ -10,7 +10,9 @@ Master program. The software architecture allows simulating the behavior of a pl
 produces a list of random via points starting from the current position and arriving at the target 
 position given by the client. Both the current position and the target positions are random points 
 defined inside the environment.
-		
+
+Action Service:
+	/motion/planner to make the planner create the desired path		
 """
 
 import random

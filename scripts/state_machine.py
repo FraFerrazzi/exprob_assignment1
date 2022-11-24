@@ -150,7 +150,7 @@ class Charge(smach.State):
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
 			try:
-				if not self._helper._battery_low():
+				if not self._helper.ret_battery_low():
 					return TRANS_BATTERY_OK
 			finally:
 				self._helper.mutex.release()			
@@ -248,7 +248,7 @@ class Reasoner(smach.State):
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
 			try:
-				if self._helper._battery_low():
+				if self._helper.ret_battery_low():
 					# may cancel goals
 					return TRANS_BATTERY_LOW
 				if self._helper.reason_done():
@@ -304,7 +304,7 @@ class Planner(smach.State):
 			self._helper.mutex.acquire()
 			try:
 				self._helper.check_planner()
-				if self._helper._battery_low():
+				if self._helper.ret_battery_low():
 					self._helper.planner_cli.cancel_all_goals()
 					return TRANS_BATTERY_LOW
 				if self._helper.plan_done():
@@ -361,7 +361,7 @@ class Controller(smach.State):
 			self._helper.mutex.acquire()
 			try:
 				self._helper.check_controller()
-				if self._helper._battery_low():
+				if self._helper.ret_battery_low():
 					self._helper.controller_cli.cancel_all_goals()
 					return TRANS_BATTERY_LOW
 				if self._helper.control_done():
@@ -410,11 +410,11 @@ class Surveillance(smach.State):
 		"""
 		log_msg = f'\n\n############ Executing state SURVEILLANCE ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
-		self._helper._surveillance()
+		self._helper.do_surveillance()
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
 			try:
-				if self._helper._battery_low():
+				if self._helper.ret_battery_low():
 					self._helper.controller_cli.cancel_all_goals()
 					return TRANS_BATTERY_LOW
 				if self._helper.surveillance_done():

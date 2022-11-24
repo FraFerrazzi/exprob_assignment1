@@ -8,7 +8,9 @@
 ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
 Master program. The software architecture allows simulating the behavior of a controller that follows a list
 of via points starting from the current point until arriving at the target point. 
-		
+
+Action service:
+	/motion/controller to make the controller follow the desired path		
 """
 
 import random
