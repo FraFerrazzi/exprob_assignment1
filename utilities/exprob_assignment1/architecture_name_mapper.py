@@ -23,21 +23,11 @@ ENVIRONMENT_SIZE = [20, 15]
 # latter case, the architecture also requires all the parameters with the scope 
 # `test/random_sense/*`, which are not used if the boolean parameter is `False`.
 PARAM_RANDOM_ACTIVE = 'test/random_sense/active'
-
-
-# The name of parameter to set the initial robot position.
-#PARAM_INITIAL_POSE = 'state/initial_pose'
 # ---------------------------------------------------------
 
 
 # The name of the node representing the shared knowledge required for this scenario.
 NODE_ROBOT_BATTERY_STATE = 'robot-battery-state'
-
-# The name of the server to get the current robot pose.
-#SERVER_GET_POSE = 'state/get_pose'
-
-# The name of the server to set the current robot pose. 
-#SERVER_SET_POSE = 'state/set_pose'
 
 # The name of the topic where the battery state is published.
 TOPIC_BATTERY_LOW = 'state/battery_low'
@@ -59,12 +49,6 @@ PARAM_BATTERY_CHARGE = 'test/random_sense/battery_charge'
 
 # The name of the node representing the shared knowledge required for this scenario.
 NODE_STATE_MACHINE = 'state-machine'
-
-# The name of the server to get the current robot pose.
-#SERVER_GET_POSE = 'state/get_pose'
-
-# The name of the server to set the current robot pose. 
-#SERVER_SET_POSE = 'state/set_pose'
 # ---------------------------------------------------------
 
 

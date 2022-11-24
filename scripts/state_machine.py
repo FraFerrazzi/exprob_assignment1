@@ -303,6 +303,7 @@ class Planner(smach.State):
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
 			try:
+				self._helper.check_planner()
 				if self._helper._battery_low():
 					self._helper.planner_cli.cancel_all_goals()
 					return TRANS_BATTERY_LOW
@@ -359,6 +360,7 @@ class Controller(smach.State):
 		while not rospy.is_shutdown():
 			self._helper.mutex.acquire()
 			try:
+				self._helper.check_controller()
 				if self._helper._battery_low():
 					self._helper.controller_cli.cancel_all_goals()
 					return TRANS_BATTERY_LOW
