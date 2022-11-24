@@ -95,8 +95,7 @@ class BuildWorld(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_WORLD_DONE: is the transition to go from the BUILDWORLD state to the REASONER
-			                  state.
+			TRANS_WORLD_DONE: is the transition to go from the BUILDWORLD state to the REASONER state.
 		
 		"""
 		log_msg = f'\n\n############ Executing state BUILD WORLD ############\n'
@@ -141,8 +140,7 @@ class Charge(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_OK: is the transition to go from the CHARGE state to the REASONER 
-			                  state.
+			TRANS_BATTERY_OK: is the transition to go from the CHARGE state to the REASONER state.
 		
 		"""
 		rospy.loginfo('\n\n############ Executing state CHARGE ############\n')
@@ -187,8 +185,7 @@ class ReachCharge(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_CHARGE_ON: is the transition to go from the REACHCHARGE state to the CHARGE
-			                 state.
+			TRANS_CHARGE_ON: is the transition to go from the REACHCHARGE state to the CHARGE state.
 		
 		"""
 		rospy.loginfo('\n\n############ Executing state REACH CHARGE ############\n')
@@ -234,10 +231,8 @@ class Reasoner(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW: is the transition to go from the REASONER state to the 
-			                   REACHCHARGE state.
-			TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER 
-			                 state.
+			TRANS_BATTERY_LOW: is the transition to go from the REASONER state to the REACHCHARGE state.
+			TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER state.
 		
 		"""
 		log_msg = f'\n\n############ Executing state REASONER ############\n'
@@ -291,10 +286,8 @@ class Planner(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW: is the transition to go from the PLANNER state to the 
-			                   REACHCHARGE state.
-			TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER 
-			               state.
+			TRANS_BATTERY_LOW: is the transition to go from the PLANNER state to the REACHCHARGE state.
+			TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER state.
 		
 		"""
 		log_msg = f'\n\n############ Executing state PLANNER ############\n'
@@ -348,11 +341,9 @@ class Controller(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW: is the transition to go from the CONTROLLER state to the
-			                   REACHCHARGE state.
-			TRANS_CHECK_LOC: is the transition to go from the CONTROLLER state to the 
-			                 SURVEILLANCE state.
-		
+			TRANS_BATTERY_LOW: is the transition to go from the CONTROLLER state to the REACHCHARGE state.
+			TRANS_CHECK_LOC: is the transition to go from the CONTROLLER state to the SURVEILLANCE state.
+			
 		"""
 		log_msg = f'\n\n############ Executing state CONTROLLER ############\n'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
@@ -402,10 +393,8 @@ class Surveillance(smach.State):
 			userdata: shared variable between the states of the Final State Machine
 
 		Returns:
-			TRANS_BATTERY_LOW: is the transition to go from the SURVEILLANCE state to the
-			                   REACHCHARGE state.
-			TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the 
-			                  REASONER state.
+			TRANS_BATTERY_LOW: is the transition to go from the SURVEILLANCE state to the REACHCHARGE state.
+			TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the REASONER state.
 		
 		"""
 		log_msg = f'\n\n############ Executing state SURVEILLANCE ############\n'

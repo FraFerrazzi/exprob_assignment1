@@ -191,11 +191,7 @@ When the environment is built, the transition to the next state occurs.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the BUILDWORLD state to the REASONER</dt><dd><p>state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the BUILDWORLD state to the REASONER state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>TRANS_WORLD_DONE</p>
@@ -223,11 +219,7 @@ When the battery is charged, the transition to the next state occurs.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the CHARGE state to the REASONER</dt><dd><p>state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the CHARGE state to the REASONER state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>TRANS_BATTERY_OK</p>
@@ -260,16 +252,11 @@ executed the SURVEILLANCE state.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the CONTROLLER state to the</dt><dd><p>REACHCHARGE state.</p>
-</dd>
-<dt>TRANS_CHECK_LOC: is the transition to go from the CONTROLLER state to the</dt><dd><p>SURVEILLANCE state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the CONTROLLER state to the REACHCHARGE state.
+TRANS_CHECK_LOC(Str): is the transition to go from the CONTROLLER state to the SURVEILLANCE state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>TRANS_BATTERY_LOW</p>
+<dd class="field-odd"><p>TRANS_BATTERY_LOW(Str)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -298,13 +285,8 @@ executed the CONTROLLER state.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the PLANNER state to the</dt><dd><p>REACHCHARGE state.</p>
-</dd>
-<dt>TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER</dt><dd><p>state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the PLANNER state to the REACHCHARGE state.
+TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>TRANS_BATTERY_LOW</p>
@@ -333,11 +315,7 @@ When the robot reaches the charging location, the transition to the next state o
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the REACHCHARGE state to the CHARGE</dt><dd><p>state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the REACHCHARGE state to the CHARGE state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>TRANS_CHARGE_ON</p>
@@ -367,13 +345,8 @@ state to be executed will be REACHCHARGE, else it will be executed the PLANNER s
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the REASONER state to the</dt><dd><p>REACHCHARGE state.</p>
-</dd>
-<dt>TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER</dt><dd><p>state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the REASONER state to the REACHCHARGE state.
+TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>TRANS_BATTERY_LOW</p>
@@ -403,13 +376,8 @@ executed the REASONER state.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>is the transition to go from the SURVEILLANCE state to the</dt><dd><p>REACHCHARGE state.</p>
-</dd>
-<dt>TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the</dt><dd><p>REASONER state.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>is the transition to go from the SURVEILLANCE state to the REACHCHARGE state.
+TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the REASONER state.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>TRANS_BATTERY_LOW</p>

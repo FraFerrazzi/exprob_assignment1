@@ -161,8 +161,7 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_WORLD_DONE: is the transition to go from the BUILDWORLD state to the REASONER</span>
-<span class="sd">			                  state.</span>
+<span class="sd">			TRANS_WORLD_DONE: is the transition to go from the BUILDWORLD state to the REASONER state.</span>
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">log_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state BUILD WORLD ############</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -207,8 +206,7 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_BATTERY_OK: is the transition to go from the CHARGE state to the REASONER </span>
-<span class="sd">			                  state.</span>
+<span class="sd">			TRANS_BATTERY_OK: is the transition to go from the CHARGE state to the REASONER state.</span>
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state CHARGE ############</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -253,8 +251,7 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_CHARGE_ON: is the transition to go from the REACHCHARGE state to the CHARGE</span>
-<span class="sd">			                 state.</span>
+<span class="sd">			TRANS_CHARGE_ON: is the transition to go from the REACHCHARGE state to the CHARGE state.</span>
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state REACH CHARGE ############</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -300,10 +297,8 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the REASONER state to the </span>
-<span class="sd">			                   REACHCHARGE state.</span>
-<span class="sd">			TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER </span>
-<span class="sd">			                 state.</span>
+<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the REASONER state to the REACHCHARGE state.</span>
+<span class="sd">			TRANS_INFO_DONE: is the transition to go from the REASONER state to the PLANNER state.</span>
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">log_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state REASONER ############</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -357,10 +352,8 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the PLANNER state to the </span>
-<span class="sd">			                   REACHCHARGE state.</span>
-<span class="sd">			TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER </span>
-<span class="sd">			               state.</span>
+<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the PLANNER state to the REACHCHARGE state.</span>
+<span class="sd">			TRANS_PLAN_OK: is the transition to go from the PLANNER state to the CONTROLLER state.</span>
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">log_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state PLANNER ############</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -414,11 +407,9 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the CONTROLLER state to the</span>
-<span class="sd">			                   REACHCHARGE state.</span>
-<span class="sd">			TRANS_CHECK_LOC: is the transition to go from the CONTROLLER state to the </span>
-<span class="sd">			                 SURVEILLANCE state.</span>
-<span class="sd">		</span>
+<span class="sd">			TRANS_BATTERY_LOW(Str): is the transition to go from the CONTROLLER state to the REACHCHARGE state.</span>
+<span class="sd">			TRANS_CHECK_LOC(Str): is the transition to go from the CONTROLLER state to the SURVEILLANCE state.</span>
+<span class="sd">			</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">log_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state CONTROLLER ############</span><span class="se">\n</span><span class="s1">&#39;</span>
 		<span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="n">anm</span><span class="o">.</span><span class="n">tag_log</span><span class="p">(</span><span class="n">log_msg</span><span class="p">,</span> <span class="n">LOG_TAG</span><span class="p">))</span>
@@ -468,10 +459,8 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the SURVEILLANCE state to the</span>
-<span class="sd">			                   REACHCHARGE state.</span>
-<span class="sd">			TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the </span>
-<span class="sd">			                  REASONER state.</span>
+<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the SURVEILLANCE state to the REACHCHARGE state.</span>
+<span class="sd">			TRANS_CHECK_DONE: is the transition to go from the SURVEILLANCE state to the REASONER state.</span>
 <span class="sd">		</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">log_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state SURVEILLANCE ############</span><span class="se">\n</span><span class="s1">&#39;</span>
