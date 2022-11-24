@@ -201,10 +201,18 @@ I have made some changes to the previously mentioned scripts to better fit the c
 
 ### Sequence diagram
 
-The state diagram focuses the timing of the communication between the different nodes. \
-The beginning corresponds to the instant in which the software architecture is launched. In the diagram is shown the case in which the `battery_low = False` for a full execution cycle and becomes `battery_low = True` after the `state_machine.py` retrieves from the ARMOR service the information regarding the new location and the updated timestamp.
+The state diagram focuses on the timing of the communication between the different nodes. \
+The beginning corresponds to the instant in which the software architecture is launched. The diagram is shown the case in which `battery_low = False` for one full execution cycle and becomes `battery_low = True` after the `state_machine.py` retrieves from the ARMOR service the information regarding the new location and the updated timestamp.
 
-<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/sequence_diagram.drawio.png" width="800">
+<img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/sequence_diagram.drawio.png" width="900">
+
+The first action done during execution is creating the Abox of the ontology, achieved by the node `state_machine.py` which sends some requests to the ARMOR service and waits until the environment is correctly created. \
+When the world is ready, the `state_machine.py` node queries the ontology to retrieve essential information regarding the location status (i.e. URGENT, ROOM, CORRIDOR, LOCATION) of the reachable room to allow the reasoner method to implement the surveillance policy of the robot. \
+Once the next location is chosen, the `state_machine.py` sends a request to the `planner.py` giving the coordinates of the current position of the robot and the next position. The response is the path composed of via points to go from the current to the next location. \
+At this point, the `controller.py` makes sure that the location will be reached. The request is sent by the `state_machine.py`, which is the path provided by the planner, and the response is the target location once the robot reaches it. \
+The `state_machine.py` queries again the ontology to update the new position of the robot and to update the timestamp of the location and of the robot itself. \
+The sequence of the loop is always the same until a `battery_low = True` signal is issued. When this happens, the robot gets to the charging location by sending a request to the `planner.py` and `controller.py` in the same way described above but imposing the charging location as the next location. \
+Once the robot is ready to charge itself, a charging request is sent to the `robot_battery_state.py` node, which is the same one that published the `battery_low` signal. When the robot is fully charged, the response setting the `battery_low = False` is received by the `state_machine.py`
 
 ---
 
