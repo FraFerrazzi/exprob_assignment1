@@ -4,7 +4,7 @@
 ---
 
 ## Documentation
-Click on the following link !!!!!!!ADD LINK!!!!!!!! to visualize the Sphinx documentation regarding the project.
+Click on the following link https://fraferrazzi.github.io/exprob_assignment1/ to visualize the Sphinx documentation regarding the project.
 
 ---
 
