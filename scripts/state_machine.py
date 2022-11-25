@@ -2,9 +2,10 @@
 """
 .. module:: state_machine
 	:platform: Unix
-	:synopsis: Python module for the user Interface
+	:synopsis: Python module for the Final State Machine
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
+
 ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
 Master program. The software architecture allows initializing a Final State Machine which controls 
 the behavior of a surveillance robot. 

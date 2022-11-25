@@ -2,9 +2,10 @@
 """
 .. module:: controller
 	:platform: Unix
-	:synopsis: Python module for the user Interface
+	:synopsis: Python module for the controller 
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
+
 ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
 Master program. The software architecture allows simulating the behavior of a controller that follows a list
 of via points starting from the current point until arriving at the target point. 
@@ -45,7 +46,7 @@ class ControllingAction(object):
 		
 		"""
 		# Get random-based parameters used by this server
-		self._random_motion_time = rospy.get_param(anm.PARAM_CONTROLLER_TIME, [0.1, 2.0])
+		self._random_motion_time = rospy.get_param(anm.PARAM_CONTROLLER_TIME, [0.2, 0.5])
 		# Instantiate and start the action server based on the `SimpleActionServer` class.
 		self._as = SimpleActionServer(anm.ACTION_CONTROLLER,
 											exprob_assignment1.msg.ControlAction,

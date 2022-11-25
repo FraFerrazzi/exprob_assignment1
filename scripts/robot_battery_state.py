@@ -5,6 +5,7 @@
 	:synopsis: Python module for the management of the battery status
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
+
 ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
 Master program. The software architecture allows the control of the battery level of the robot.
 This node publishes the state of the battery on the topic /state/battery_low. The transition of 

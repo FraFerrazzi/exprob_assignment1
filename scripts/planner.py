@@ -2,9 +2,10 @@
 """
 .. module:: planner
 	:platform: Unix
-	:synopsis: Python module for the user Interface
+	:synopsis: Python module for the planner
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
+
 ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
 Master program. The software architecture allows simulating the behavior of a planner that 
 produces a list of random via points starting from the current position and arriving at the target 
@@ -48,7 +49,7 @@ class PlaningAction(object):
 		"""
 		# Get random-based parameters used by this server
 		self._random_plan_points = rospy.get_param(anm.PARAM_PLANNER_POINTS, [2, 8])
-		self._random_plan_time = rospy.get_param(anm.PARAM_PLANNER_TIME, [0.1, 1])
+		self._random_plan_time = rospy.get_param(anm.PARAM_PLANNER_TIME, [0.1, 0.3])
 		#self._environment_size = rospy.get_param(anm.PARAM_ENVIRONMENT_SIZE)
 		# Instantiate and start the action server based on the `SimpleActionServer` class.
 		self._as = SimpleActionServer(anm.ACTION_PLANNER, 

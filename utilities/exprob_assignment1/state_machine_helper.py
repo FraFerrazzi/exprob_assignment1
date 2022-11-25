@@ -2,9 +2,10 @@
 """
 .. module:: state_machine_helper
 	:platform: Unix
-	:synopsis: Python module for the user Interface
+	:synopsis: Python module for the Helper of the State Machine
    
 .. moduleauthor:: Francesco Ferrazzi <s5262829@studenti.unige.it>
+
 ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering
 Master program. The software architecture allows initializing a helper class for the Final State Machine 
 which controls the behavior of a surveillance robot. 
@@ -72,7 +73,7 @@ NUMBER_ROOMS = 4
 NUMBER_CORRIDORS = 3
 NUMBER_DOORS = 7
 # Initialize and define the time for which a robot checks the room
-WAIT_SURVEILLANCE_TIME = rospy.Duration(0.2)
+WAIT_SURVEILLANCE_TIME = rospy.Duration(0.15)
 # Define the number for which the state of the action client is done
 DONE = 3 # since the get_state() function returns 3 when the action server achieves the goal
 
@@ -255,19 +256,28 @@ class Helper:
 		ontology_manager('ADD', 'OBJECTPROP', 'IND', ARGS)
 		# Define the locations
 		self._locations = self._rooms + self._corridors
-		location_number = range(0,NUMBER_ROOMS+NUMBER_CORRIDORS)
+		location_number = range(0,NUMBER_ROOMS+NUMBER_CORRIDORS) 
 		# Disjoint corridors, rooms and doors
 		ARGS = self._rooms + self._corridors + self._doors
 		ontology_manager('DISJOINT', 'IND', '', ARGS)
 		# State the robot initial position
 		ARGS = ['isIn', 'Robot1', self.prev_loc]
 		ontology_manager('ADD', 'OBJECTPROP', 'IND' , ARGS)
-		# Get the current time
-		self.timer_now = str(0) # This is done to make every room URGENT at the beginning  
+		# Get a time in the past (before the timestamp of the robot)
+		self.timer_now = str(int(1000000000)) # This is done to make every room URGENT at the beginning  
 		# Start the timestamp in every location to retrieve when a location becomes urgent
 		for g in location_number:
 			ARGS = ['visitedAt', self._locations[g], 'Long', self.timer_now]
 			ontology_manager('ADD', 'DATAPROP', 'IND', ARGS)
+		# Update the timestamp of corridor 'E' since the robot spawns in it
+		ARGS = ['']
+		ontology_manager('REASON', '', '', ARGS)
+		ARGS = ['visitedAt', self.charge_loc]
+		last_location = ontology_manager('QUERY', 'DATAPROP', 'IND', ARGS)
+		last_location = ontology_format(last_location, 1, 11) 
+		self.timer_now = str(int(time.time())) # initial location is not urgent
+		ARGS = ['visitedAt', self.charge_loc, 'Long', self.timer_now, last_location[0]]
+		ontology_manager('REPLACE', 'DATAPROP', 'IND', ARGS)
 		# Save ontology for DEBUG purposes
 		#ARGS = [ONTOLOGY_FILE_PATH_DEBUG] # <--- uncomment this line for ontology debug
 		#ontology_manager('SAVE', '', '', ARGS) # <--- uncomment this line for ontology debug
@@ -604,9 +614,9 @@ class Helper:
 			# Retreive the last time a specific location has been visited
 			ARGS = ['visitedAt', self.next_loc]
 			last_location = ontology_manager('QUERY', 'DATAPROP', 'IND', ARGS)
-			last_location = ontology_format(last_location, 1, 11)
+			last_location = ontology_format(last_location, 1, 11) 
 			# Update the time
-			self.timer_now = str(int(time.time()))  
+			self.timer_now = str(int(time.time())) 
 			# Update the timestamp since the robot moved
 			ARGS = ['now', 'Robot1', 'Long', self.timer_now, last_motion[0]]
 			ontology_manager('REPLACE', 'DATAPROP', 'IND', ARGS)
@@ -665,7 +675,7 @@ class Helper:
 		surv_count = 0
 		log_msg = f'The robot is surveilling the location'
 		rospy.loginfo(anm.tag_log(log_msg, LOG_TAG))
-		while self.battery_low == False and surv_count < 25: # If bettery low there won't be surveillance task
+		while self.battery_low == False and surv_count < 20: # If bettery low there won't be surveillance task
 			rospy.sleep(WAIT_SURVEILLANCE_TIME)
 			surv_count = surv_count + 1
 		if self.battery_low == False:

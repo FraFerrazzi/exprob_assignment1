@@ -68,9 +68,10 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">.. module:: state_machine</span>
 <span class="sd">	:platform: Unix</span>
-<span class="sd">	:synopsis: Python module for the user Interface</span>
+<span class="sd">	:synopsis: Python module for the Final State Machine</span>
 <span class="sd">   </span>
 <span class="sd">.. moduleauthor:: Francesco Ferrazzi &lt;s5262829@studenti.unige.it&gt;</span>
+
 <span class="sd">ROS node for the first assignment of the Experimental Robotics course of the Robotics Engineering</span>
 <span class="sd">Master program. The software architecture allows initializing a Final State Machine which controls </span>
 <span class="sd">the behavior of a surveillance robot. </span>
@@ -407,8 +408,8 @@
 <span class="sd">			userdata: shared variable between the states of the Final State Machine</span>
 
 <span class="sd">		Returns:</span>
-<span class="sd">			TRANS_BATTERY_LOW(Str): is the transition to go from the CONTROLLER state to the REACHCHARGE state.</span>
-<span class="sd">			TRANS_CHECK_LOC(Str): is the transition to go from the CONTROLLER state to the SURVEILLANCE state.</span>
+<span class="sd">			TRANS_BATTERY_LOW: is the transition to go from the CONTROLLER state to the REACHCHARGE state.</span>
+<span class="sd">			TRANS_CHECK_LOC: is the transition to go from the CONTROLLER state to the SURVEILLANCE state.</span>
 <span class="sd">			</span>
 <span class="sd">		&quot;&quot;&quot;</span>
 		<span class="n">log_msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">############ Executing state CONTROLLER ############</span><span class="se">\n</span><span class="s1">&#39;</span>
