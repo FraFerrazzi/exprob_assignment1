@@ -16,7 +16,10 @@ The robot's objective is to go around the map, simulating a surveillance task wh
 The program interacts with an ontology to retrieve essential information to achieve the desired behavior. \
 A short video shows the execution of the software architecture:
 
-https://user-images.githubusercontent.com/91314392/203836485-81fd2afe-6e91-47c8-bac8-218aeaaf7863.mp4
+https://user-images.githubusercontent.com/91314392/204024619-f9d81c6f-7f43-4e4f-a92a-818c6efe976e.mp4
+
+This video reports the execution of the program when the `surveillance_random.launch` is used. \
+The only difference concerning the `surveillance_manual.launch` is that the GUI of the `robot_battery_state` node is different and the `battery_low` signal is randomly generated in the former.
 
 ## How to run
 
