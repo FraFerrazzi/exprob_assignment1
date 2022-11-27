@@ -18,14 +18,15 @@ A short video shows the execution of the software architecture:
 
 https://user-images.githubusercontent.com/91314392/204024619-f9d81c6f-7f43-4e4f-a92a-818c6efe976e.mp4
 
+On the left, in the main terminal, it is visible the execution and the screen output of the `state_machine.py` node. This node implements the Final State Machine and shows every transition from one state to another to achieve the desired behavior of the program. The choice was to keep the User Interface not too complex and with few outputs for each state. This was done to avoid too much information on the screen that could confuse the reader. Mainly at each step is shown: the current state that is being executed, the most important things that the state does, and the transition to the next state. \
+On the right, three xterm windows appear once the program is launched. The window at the top is the `controller.py` which shows the reaching point of the robot. Also, the state of the controller is visible. The one in the middle represents the `planner.py` node and shows the list of via points to go from the current position to the target position. The one at the bottom is the `robot_battery_state.py` and is responsible for generating the `battery_low` signal. It manages also the charging action of the robot when the battery is low. \
 This video reports the execution of the program when the `surveillance_random.launch` is used. \
 The only difference concerning the `surveillance_manual.launch` is that the GUI of the `robot_battery_state` node is different and the `battery_low` signal is randomly generated in the former.
 
 ## How to run
 
 This software is based on ROS Noetic, and it has been developed with this Docker-based
-[environment](https://hub.docker.com/repository/docker/carms84/exproblab), which already 
-provides the required dependencies. \ 
+[environment](https://hub.docker.com/repository/docker/carms84/exproblab), which already provides the required dependencies. \
 If the Docker image is not used, it is necessary to download some essential packages. If a new version of ROS is installed on your machine, the suggestion is to follow the procedure written in this link: https://github.com/EmaroLab/armor/issues/7. \
 Instead, if an older version of ROS is present in your machine, please refer to: https://github.com/EmaroLab/armor. \
 In both cases, the procedure explained in the README files should be followed and the needed repositories must be cloned and built in your ROS workspace. \
@@ -78,7 +79,7 @@ The urgency of one location is determined by computing the difference between th
 ## Assumptions
 
 During the development of the project, some simplified assumptions were done to make an easier model of a surveillance robot:
- - The robot moves in a 2D, pre-defined, therefore known environment without obstacles.
+ - The robot moves in a 2D, pre-defined, known environment without obstacles.
  - Rooms have only one door and corridors have at least two doors. One location can only have one door shared with another location.
  - The charging location is also the initial location of the robot, and it is pre-defined.
  - The number of rooms, corridors, and doors is fixed, only the layout changes.
@@ -153,8 +154,7 @@ The software exploits [roslaunch](http://wiki.ros.org/roslaunch) and
 [rospy](http://wiki.ros.org/rospy) for using python with ROS. Rospy allows defining ROS nodes, 
 services, and related messages. \
 Also, the software uses [actionlib](http://wiki.ros.org/actionlib/DetailedDescription) to define
-action servers. In particular, this software is based on the use of the [SimpleActionServer](http://docs.ros.org/en/jade/api/actionlib/html/classactionlib_1_1simple__action__server_1_1SimpleActionServer.html#a2013e3b4a6a3cb0b77bb31403e26f137) and the [SimpleActionClient](https://docs.ros.org/en/api/actionlib/html/classactionlib_1_1simple__action__client_1_1SimpleActionClient.html)
-to implement the project. \
+action servers. In particular, the action services are implemented by using the [SimpleActionServer](http://docs.ros.org/en/jade/api/actionlib/html/classactionlib_1_1simple__action__server_1_1SimpleActionServer.html#a2013e3b4a6a3cb0b77bb31403e26f137) and the [SimpleActionClient](https://docs.ros.org/en/api/actionlib/html/classactionlib_1_1simple__action__client_1_1SimpleActionClient.html). \
 The Finite States Machine using the software components provided in this repository is based on [SMACH](http://wiki.ros.org/smach).
 It is possible to check the [tutorials](http://wiki.ros.org/smach/Tutorials) related to SMACH, for an overview of its 
 functionalities. In addition, it is advised to exploit the [smach_viewer](http://wiki.ros.org/smach_viewer)
