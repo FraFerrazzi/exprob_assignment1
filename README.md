@@ -176,7 +176,7 @@ The first diagram shows the state machine implemented in the code. The figure he
 <img src="https://github.com/FraFerrazzi/exprob_assignment1/blob/main/diagrams/state_diagram.drawio.png" width="900">
 
 The state machine is composed of seven states, which are:
-- `Build World`: state in which the Tbox of the ontology is loaded and then manipulated to create the desired environment according to the request. This state builds the Abox of the ontology. It can be possible to save the ontology for debugging purposes by uncommenting a few lines of code in the `state_machine_helper.py` script (lines: 264-265).
+- `Build World`: state in which the Tbox of the ontology is loaded and then manipulated to create the desired environment according to the request. This state builds the Abox of the ontology. It can be possible to save the ontology for debugging purposes by uncommenting a few lines of code in the `state_machine_helper.py` script (lines: 282-283).
 - `Reasoner`: state that queries the ontology to retrieve essential information used for the surveillance behavior of the robot. The reachable rooms are checked and the robot chooses where to go next based on their urgency or the type of location.
 - `Planner`: state that plans a path of random via points going from the current point to a random target point defined inside the environmental limits. This is not an actual planner but just a dummy implementation created to waste time.
 - `Controller`: state that receives the path composed of via points defined by the planner and wastes some time for each point defined in the path. This is not an actual controller that makes the robot follow the desired path. It is just a dummy implementation of a real controller.
